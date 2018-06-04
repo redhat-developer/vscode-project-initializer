@@ -1,5 +1,7 @@
 # Fabric8 Launcher VSCode
 
+[![Build Status](https://travis-ci.org/jeffmaury/fabric8-launcher-vscode-extension.svg?branch=master)](https://travis-ci.org/jeffmaury/fabric8-launcher-vscode-extension)
+
 ## Overview
 
 A lightweight extension based on Fabric8 Launcher to generate quickstart projects using Visual Studio Code (VS Code). Here's a list of features:
