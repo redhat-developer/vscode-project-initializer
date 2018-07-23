@@ -2,7 +2,7 @@
     "name": "fabric8-launcher-vscode-extension",
     "displayName": "fabric8-launcher-vscode-extension",
     "description": "A lightweight extension based on Fabric8 launcher to generate quickstart projects ",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "EPL-1.0",
     "publisher": "jeffmaury",
     "icon": "icons/fabric8.png",
