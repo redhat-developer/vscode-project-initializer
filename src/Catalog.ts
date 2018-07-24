@@ -1,38 +1,19 @@
 import * as request from 'request'
 
 export class Catalog {
-    private missions:any;
-    private runtimes:any;
+    private catalog:any;
     constructor(readonly endpoint:string) {}
 
-    getMissions() : Promise<Array<any>> {
+    getCatalog() : Promise<any> {
         return new Promise((resolve, reject) => {
-            if (this.missions) {
-                resolve(this.missions)
+            if (this.catalog) {
+                resolve(this.catalog)
             } else {
-                request(this.endpoint + "/booster-catalog/missions", (error, response, body) => {
+                request(this.endpoint + "/booster-catalog", (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {
-                        resolve(this.missions = JSON.parse(body));
-                    }
-
-                });
-
-            }
-        });
-    }
-
-    getRuntimes() : Promise<Array<any>> {
-        return new Promise((resolve, reject) => {
-            if (this.runtimes) {
-                resolve(this.missions)
-            } else {
-                request(this.endpoint + "/booster-catalog/runtimes", (error, response, body) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(this.runtimes = JSON.parse(body));
+                        resolve(this.catalog = JSON.parse(body));
                     }
 
                 });

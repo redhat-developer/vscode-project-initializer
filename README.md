@@ -26,3 +26,11 @@ None at this point.
 
 First version for early feedback
 
+### 0.0.2
+
+First missing dependency
+
+### 0.0.3
+
+Update for new Launcher API
+
