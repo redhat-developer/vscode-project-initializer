@@ -41,3 +41,7 @@ Update for new Launcher API
 
 Endpoint URL, default groupID, artifactId and version settings
 
+### 0.0.5
+
+Fix typo in default endpoint URL causing catalog loading error
+

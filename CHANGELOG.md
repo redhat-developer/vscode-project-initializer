@@ -14,3 +14,7 @@
 ### 0.0.4
 
 - Add Endpoint URL, default groupID, artifactId and version settings
+
+### 0.0.5
+
+- Fix typo in default endpoint URL causing catalog loading error

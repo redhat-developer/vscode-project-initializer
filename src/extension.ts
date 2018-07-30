@@ -69,7 +69,7 @@ async function generate() {
         }
     }
     catch (error) {
-        vscode.window.showErrorMessage("Error while processing Fabric8 launcher");
+        vscode.window.showErrorMessage("Error while processing Fabric8 launcher" + error);
     }
 }
 
