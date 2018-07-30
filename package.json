@@ -31,7 +31,7 @@
             "title": "Fabric8 launcher",
             "properties": {
               "fabric8.launcher.endpointUrl": {
-                "default": "https://https://forge.api.openshift.io/api/",
+                "default": "https://forge.api.openshift.io/api/",
                 "type": "string",
                 "pattern": "https?://.*/",
                 "scope": "window",
