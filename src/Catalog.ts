@@ -9,7 +9,7 @@ export class Catalog {
             if (this.catalog) {
                 resolve(this.catalog)
             } else {
-                request(this.endpoint + "/booster-catalog", (error, response, body) => {
+                request(this.endpoint + "booster-catalog", (error, response, body) => {
                     if (error) {
                         reject(error);
                     } else {

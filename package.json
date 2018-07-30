@@ -2,7 +2,7 @@
     "name": "fabric8-launcher-vscode-extension",
     "displayName": "fabric8-launcher-vscode-extension",
     "description": "A lightweight extension based on Fabric8 launcher to generate quickstart projects ",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "license": "EPL-1.0",
     "publisher": "jeffmaury",
     "icon": "icons/fabric8.png",
@@ -26,7 +26,37 @@
             "command": "fabric8.launcher.generate",
             "title": "Generate a project from Fabric8 launcher",
             "category": "Fabric8"
-        }]
+        }],
+        "configuration": {
+            "title": "Fabric8 launcher",
+            "properties": {
+              "fabric8.launcher.endpointUrl": {
+                "default": "https://https://forge.api.openshift.io/api/",
+                "type": "string",
+                "pattern": "https?://.*/",
+                "scope": "window",
+                "description": "Fabric8 launcher endpoint URL."
+              },
+              "fabric8.launcher.defaultGroupId": {
+                "default": "io.openshift",
+                "type": "string",
+                "scope": "window",
+                "description": "Default value for Group Id."
+              },
+              "fabric8.launcher.defaultArtifactId": {
+                "default": "booster",
+                "type": "string",
+                "scope": "window",
+                "description": "Default value for Artifact Id."
+              },
+              "fabric8.launcher.defaultVersion": {
+                "default": "0.0.1-SNAPSHOT",
+                "type": "string",
+                "scope": "window",
+                "description": "Default value for Version."
+              }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

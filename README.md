@@ -14,7 +14,10 @@ A lightweight extension based on Fabric8 Launcher to generate quickstart project
 
 ## Extension Settings
 
-None at this point.
+* `fabric8.launcher.endpointUrl`: launcher service endpoint URL. Defaults to https://forge.api.openshift.io/api/
+* `fabric8.launcher.defaultGroupId`: default group id. Defaults to io.openshift
+* `fabric8.launcher.defaultArtifactId`: default artifact id. Defaults to booster
+* `fabric8.launcher.defaultVersion`: default version. Defaults to 0.0.1-SNAPSHOT
 
 ## Known Issues
 
@@ -33,4 +36,8 @@ First missing dependency
 ### 0.0.3
 
 Update for new Launcher API
+
+### 0.0.4
+
+Endpoint URL, default groupID, artifactId and version settings
 
