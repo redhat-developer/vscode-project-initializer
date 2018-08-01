@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import { Catalog } from './Catalog';
 import * as zip from 'adm-zip'
 
-let catalogBuilder:Catalog = new Catalog(vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://https://forge.api.openshift.io/api/"));
+let catalogBuilder:Catalog = new Catalog(vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://forge.api.openshift.io/api/"));
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 function updateCatalog(event: vscode.ConfigurationChangeEvent) {
     if (event.affectsConfiguration("fabric8.launcher.endpointUrl")) {
-        let url = vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://https://forge.api.openshift.io/api/");
+        let url = vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://forge.api.openshift.io/api/");
         if (catalogBuilder.endpoint != url) {
             catalogBuilder = new Catalog(url);
         }
