@@ -1,6 +1,6 @@
 # Fabric8 Launcher VSCode
 
-[![Build Status](https://semaphoreci.com/api/v1/fabric8-launcher/launcher-vscode-extension/branches/master/badge.svg)](https://semaphoreci.com/fabric8-launcher/launcher-vscode-extension)
+[![Build Status](https://semaphoreci.com/api/v1/fabric8-launcher/launcher-vscode-extension/branches/master/badge.png)](https://semaphoreci.com/fabric8-launcher/launcher-vscode-extension)
 [![Build status](https://ci.appveyor.com/api/projects/status/bndhekqk8lnj0s99?svg=true)](https://ci.appveyor.com/project/fabric8-launcher/launcher-vscode-extension)
 
 ## Overview
