@@ -45,3 +45,7 @@ Endpoint URL, default groupID, artifactId and version settings
 
 Fix typo in default endpoint URL causing catalog loading error
 
+### 0.0.6
+
+Files are now extracted at the root of the workspace folder
+
