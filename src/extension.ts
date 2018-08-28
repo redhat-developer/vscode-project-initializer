@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 function updateCatalog(event: vscode.ConfigurationChangeEvent) {
     if (event.affectsConfiguration("fabric8.launcher.endpointUrl")) {
-        let url = vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://https://forge.api.openshift.io/api/");
+        let url = vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://forge.api.openshift.io/api/");
         if (catalogBuilder.endpoint != url) {
             catalogBuilder = new Catalog(url);
         }
