@@ -6,6 +6,7 @@
 // The module 'assert' provides assertion methods from node
 import * as assert from 'assert';
 import * as vscode from 'vscode';
+import { Catalog } from '../Catalog';
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -34,6 +35,14 @@ suite("Extension Tests", function () {
 			});
 			assert.equal(myCommands.length , 1, 'Some commands are not registered properly or a new command is not added to the test');
 		});
+	});
+
+	test('Should load default catalog', function() {
+		let catalog = new Catalog('https://forge.api.openshift.io/api/');
+		return catalog.getCatalog().then(res => {
+			assert.ok(res);
+		})
+
 	});
 
 });

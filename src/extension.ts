@@ -3,7 +3,9 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { Catalog } from './Catalog';
-import * as zip from 'adm-zip'
+import * as yauzl from 'yauzl'
+let fs = require('fs');
+let p = require('path');
 
 let catalogBuilder:Catalog = new Catalog(vscode.workspace.getConfiguration("fabric8.launcher").get<string>("endpointUrl", "https://forge.api.openshift.io/api/"));
 // this method is called when your extension is activated
@@ -52,13 +54,8 @@ async function generate() {
                                     let folder = await vscode.window.showWorkspaceFolderPick({placeHolder:'Select the target workspace folder'});
                                     if (folder) {
                                         vscode.window.setStatusBarMessage("Unzipping project file", 1000);
-                                        new zip(zipProject as Buffer).extractAllToAsync(folder.uri.fsPath, false, (error) => {
-                                            if (error) {
-                                                vscode.window.showErrorMessage("Error while unzipping to " + folder!.uri.fsPath);
-                                            } else {
-                                                vscode.window.showInformationMessage("Project saved to " + folder!.uri.fsPath);
-                                            }
-                                        });
+                                        extract(zipProject as Buffer, folder.uri.fsPath);
+                                        vscode.window.showInformationMessage("Project saved to " + folder!.uri.fsPath);
                                     }
                                 }
                             }
@@ -71,6 +68,43 @@ async function generate() {
     catch (error) {
         vscode.window.showErrorMessage("Error while processing Fabric8 launcher" + error);
     }
+    
+}
+
+function extract(content:Buffer, path:string) {
+    yauzl.fromBuffer(content, {lazyEntries:true}, (err, zipfile) => {
+        if (err) {
+            throw err;
+        }
+        zipfile!.readEntry();
+        zipfile!.on("entry", (entry:yauzl.Entry) => {
+            console.log("Processing " + entry.fileName);
+            let entryPath = removeFirstLevel(entry.fileName);
+            if (entryPath != "/") {
+                let mappedPath = p.resolve(path, p.normalize(entryPath));
+                if (entryPath.endsWith("/")) {
+                    fs.mkdirSync(mappedPath);
+                } else {
+                    zipfile!.openReadStream(entry, (err,stream) => {
+                        if (err) {
+                            throw err;
+                        }
+                        stream!.pipe(fs.createWriteStream(mappedPath));
+                    });
+                }
+            }
+            zipfile!.readEntry();
+        });
+
+    });
+}
+
+function removeFirstLevel(path:string) {
+    let index = path.indexOf("/");
+    if (index != (-1)) {
+        path = path.substring(index + 1);
+    }
+    return path;
 }
 
 // this method is called when your extension is deactivated
