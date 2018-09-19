@@ -17,12 +17,12 @@ import { Catalog } from '../Catalog';
 suite("Extension Tests", function () {
 
     test('Extension should be present', () => {
-		assert.ok(vscode.extensions.getExtension('jeffmaury.fabric8-launcher-vscode-extension'));
+		assert.ok(vscode.extensions.getExtension('redhat.fabric8-launcher-vscode-extension'));
 	});
 
 	test('should activate', function () {
 		this.timeout(1 * 60 * 1000);
-		return vscode.extensions.getExtension('jeffmaury.fabric8-launcher-vscode-extension')!.activate().then((api) => {
+		return vscode.extensions.getExtension('redhat.fabric8-launcher-vscode-extension')!.activate().then((api) => {
 			assert.ok(true);
 		});
 	});
