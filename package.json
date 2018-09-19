@@ -1,15 +1,16 @@
 {
     "name": "fabric8-launcher-vscode-extension",
-    "displayName": "fabric8-launcher-vscode-extension",
-    "description": "A lightweight extension based on Fabric8 launcher to generate quickstart projects ",
-    "version": "0.0.6",
+    "displayName": "Launcher Support by Red Hat",
+    "description": "A lightweight extension based on Fabric8 Launcher to generate quickstart projects using VSCode",
+    "version": "0.0.7",
     "license": "EPL-1.0",
-    "publisher": "jeffmaury",
+    "publisher": "redhat",
+    "author": "Red Hat",
     "icon": "icons/fabric8.png",
-    "homepage": "https://github.com/jeffmaury/fabric8-launcher-vscode-extensionb/blob/master/README.md",
+    "homepage": "https://github.com/fabric8-launcher/launcher-vscode-extension/blob/master/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jeffmaury/fabric8-launcher-vscode-extension"
+        "url": "https://github.com/fabric8-launcher/launcher-vscode-extension"
     },
     "engines": {
         "vscode": "^1.19.0"
