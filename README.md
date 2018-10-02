@@ -13,6 +13,14 @@ A lightweight extension based on Fabric8 Launcher to generate quickstart project
 
 - VS Code (version 1.19.0 or later)
 
+## How-to
+
+First you need to "open the folder" in VS Code in which you want to create the project.
+
+Then, you can trigger the Fabric8 launcher. It is available from Palette command (Ctrl+Shift=P) with the name "Fabric8: generate a project from Fabric8 launcher":
+
+![Fabric8 palette entry.](images/fabric8LauncherPaletteEntry.png "Fabric8 Palette entry")
+
 ## Extension Settings
 
 * `fabric8.launcher.endpointUrl`: launcher service endpoint URL. Defaults to https://forge.api.openshift.io/api/
