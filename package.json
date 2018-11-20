@@ -1,7 +1,7 @@
 {
-    "name": "fabric8-launcher-vscode-extension",
-    "displayName": "Launcher Support by Red Hat",
-    "description": "A lightweight extension based on Fabric8 Launcher to generate quickstart projects using VSCode",
+    "name": "project-initializer",
+    "displayName": "Project Initializer by Red Hat",
+    "description": "A lightweight extension based on Red Hat Launcher to generate quickstart projects using VSCode",
     "version": "0.0.7",
     "license": "EPL-1.0",
     "publisher": "redhat",
@@ -19,38 +19,38 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:fabric8.launcher.generate"
+        "onCommand:project.initializer.generate"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [{
-            "command": "fabric8.launcher.generate",
-            "title": "Generate a project from Fabric8 launcher",
-            "category": "Fabric8"
+            "command": "project.initializer.generate",
+            "title": "Generate a project using Project Initializer",
+            "category": "Project"
         }],
         "configuration": {
-            "title": "Fabric8 launcher",
+            "title": "Project initializer",
             "properties": {
-              "fabric8.launcher.endpointUrl": {
+              "project.initializer.endpointUrl": {
                 "default": "https://forge.api.openshift.io/api/",
                 "type": "string",
                 "pattern": "https?://.*/",
                 "scope": "window",
-                "description": "Fabric8 launcher endpoint URL."
+                "description": "Project Initializer endpoint URL."
               },
-              "fabric8.launcher.defaultGroupId": {
+              "project.initializer.defaultGroupId": {
                 "default": "io.openshift",
                 "type": "string",
                 "scope": "window",
                 "description": "Default value for Group Id."
               },
-              "fabric8.launcher.defaultArtifactId": {
+              "project.initializer.defaultArtifactId": {
                 "default": "booster",
                 "type": "string",
                 "scope": "window",
                 "description": "Default value for Artifact Id."
               },
-              "fabric8.launcher.defaultVersion": {
+              "project.initializer.defaultVersion": {
                 "default": "0.0.1-SNAPSHOT",
                 "type": "string",
                 "scope": "window",
