@@ -22,3 +22,7 @@
 ### 0.0.6
 
 - Files are now extracted at the root of the workspace folder
+
+### 0.0.7
+
+- Add VSCode recommendation files to generated projects
