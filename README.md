@@ -58,3 +58,7 @@ Fix typo in default endpoint URL causing catalog loading error
 
 Files are now extracted at the root of the workspace folder
 
+### 0.0.7
+
+Add VSCode recommendation files to generated projects
+
