@@ -23,39 +23,41 @@
     ],
     "main": "./out/extension",
     "contributes": {
-        "commands": [{
-            "command": "project.initializer.generate",
-            "title": "Generate a project using Project Initializer",
-            "category": "Project"
-        }],
+        "commands": [
+            {
+                "command": "project.initializer.generate",
+                "title": "Generate a project using Project Initializer",
+                "category": "Project"
+            }
+        ],
         "configuration": {
             "title": "Project initializer",
             "properties": {
-              "project.initializer.endpointUrl": {
-                "default": "https://forge.api.openshift.io/api/",
-                "type": "string",
-                "pattern": "https?://.*/",
-                "scope": "window",
-                "description": "Project Initializer endpoint URL."
-              },
-              "project.initializer.defaultGroupId": {
-                "default": "io.openshift",
-                "type": "string",
-                "scope": "window",
-                "description": "Default value for Group Id."
-              },
-              "project.initializer.defaultArtifactId": {
-                "default": "booster",
-                "type": "string",
-                "scope": "window",
-                "description": "Default value for Artifact Id."
-              },
-              "project.initializer.defaultVersion": {
-                "default": "0.0.1-SNAPSHOT",
-                "type": "string",
-                "scope": "window",
-                "description": "Default value for Version."
-              }
+                "project.initializer.endpointUrl": {
+                    "default": "https://forge.api.openshift.io/api/",
+                    "type": "string",
+                    "pattern": "https?://.*/",
+                    "scope": "window",
+                    "description": "Project Initializer endpoint URL."
+                },
+                "project.initializer.defaultGroupId": {
+                    "default": "io.openshift",
+                    "type": "string",
+                    "scope": "window",
+                    "description": "Default value for Group Id."
+                },
+                "project.initializer.defaultArtifactId": {
+                    "default": "booster",
+                    "type": "string",
+                    "scope": "window",
+                    "description": "Default value for Artifact Id."
+                },
+                "project.initializer.defaultVersion": {
+                    "default": "0.0.1-SNAPSHOT",
+                    "type": "string",
+                    "scope": "window",
+                    "description": "Default value for Version."
+                }
             }
         }
     },
@@ -73,12 +75,14 @@
         "@types/node": "^7.0.43",
         "@types/mocha": "^5.2.5",
         "mocha": "^5.2.0",
-        "mocha-jenkins-reporter": "^0.4.1"
+        "mocha-jenkins-reporter": "^0.4.1",
+        "@types/request-promise-native": "^1.0.15"
     },
     "dependencies": {
         "@types/request": "^2.47.0",
         "request": "^2.47.0",
-        "yauzl":"^2.10.0",
-        "@types/yauzl":"^2.9.0"
+        "yauzl": "^2.10.0",
+        "@types/yauzl": "^2.9.0",
+        "request-promise-native": "^1.0.7"
     }
 }
