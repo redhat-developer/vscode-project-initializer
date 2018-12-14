@@ -24,7 +24,7 @@ export class Catalog {
 
     zip(name:string, missionId:string, runtimeId:string, versionId:string, groupId:string, artifactId:string, version:string) {
         return new Promise((resolve, reject) => {
-            request.get(this.endpoint + 'launcher/zip', {qs: {mission:missionId,runtime:runtimeId,runtimeVersion:versionId,projectName:name,groupId:groupId,artifactId:artifactId,projectVersion:version}, encoding:null},
+            request.get(this.endpoint + 'launcher/zip', {qs: {mission:missionId,runtime:runtimeId,runtimeVersion:versionId,projectName:name,groupId:groupId,artifactId:artifactId,projectVersion:version,ide:'vscode'}, encoding:null},
             (error, response, body) => {
                 if (error) {
                     reject(error);
