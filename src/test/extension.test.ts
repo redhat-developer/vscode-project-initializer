@@ -17,12 +17,12 @@ import { Catalog } from '../Catalog';
 suite("Extension Tests", function () {
 
     test('Extension should be present', () => {
-		assert.ok(vscode.extensions.getExtension('jeffmaury.fabric8-launcher-vscode-extension'));
+		assert.ok(vscode.extensions.getExtension('redhat.project-initializer'));
 	});
 
 	test('should activate', function () {
 		this.timeout(1 * 60 * 1000);
-		return vscode.extensions.getExtension('jeffmaury.fabric8-launcher-vscode-extension')!.activate().then((api) => {
+		return vscode.extensions.getExtension('redhat.project-initializer')!.activate().then((api) => {
 			assert.ok(true);
 		});
 	});
@@ -31,9 +31,9 @@ suite("Extension Tests", function () {
 		return vscode.commands.getCommands(true).then((commands) =>
 		{
 			let myCommands = commands.filter(function(value){
-				return value.startsWith('fabric8.launcher');
+				return value.startsWith('project.initializer');
 			});
-			assert.equal(myCommands.length , 1, 'Some commands are not registered properly or a new command is not added to the test');
+			assert.equal(myCommands.length, 1, 'Some commands are not registered properly or a new command is not added to the test');
 		});
 	});
 

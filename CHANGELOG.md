@@ -26,3 +26,7 @@
 ### 0.0.7
 
 - Add VSCode recommendation files to generated projects
+
+### 0.0.8
+
+Switch to Project Initializer

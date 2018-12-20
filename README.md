@@ -5,7 +5,7 @@
 
 ## Overview
 
-A lightweight extension based on Fabric8 Launcher to generate quickstart projects using Visual Studio Code (VS Code). Here's a list of features:
+A lightweight extension based on Red Hat Launcher to generate quickstart projects using Visual Studio Code (VS Code). Here's a list of features:
 
 - Generator
 
@@ -17,16 +17,16 @@ A lightweight extension based on Fabric8 Launcher to generate quickstart project
 
 First you need to "open the folder" in VS Code in which you want to create the project.
 
-Then, you can trigger the Fabric8 launcher. It is available from Palette command (Ctrl+Shift=P) with the name "Fabric8: generate a project from Fabric8 launcher":
+Then, you can trigger the Project Initializer. It is available from Palette command (Ctrl+Shift=P) with the name "Project: generate a project using Project Initializer":
 
-![Fabric8 palette entry.](images/fabric8LauncherPaletteEntry.png "Fabric8 Palette entry")
+![Project Initializer palette entry.](images/fabric8LauncherPaletteEntry.png "Project Initializer Palette entry")
 
 ## Extension Settings
 
-* `fabric8.launcher.endpointUrl`: launcher service endpoint URL. Defaults to https://forge.api.openshift.io/api/
-* `fabric8.launcher.defaultGroupId`: default group id. Defaults to io.openshift
-* `fabric8.launcher.defaultArtifactId`: default artifact id. Defaults to booster
-* `fabric8.launcher.defaultVersion`: default version. Defaults to 0.0.1-SNAPSHOT
+* `project.initializer.endpointUrl`: launcher service endpoint URL. Defaults to https://forge.api.openshift.io/api/
+* `project.initializer.defaultGroupId`: default group id. Defaults to io.openshift
+* `project.initializer.defaultArtifactId`: default artifact id. Defaults to booster
+* `project.initializer.defaultVersion`: default version. Defaults to 0.0.1-SNAPSHOT
 
 ## Known Issues
 
@@ -61,4 +61,8 @@ Files are now extracted at the root of the workspace folder
 ### 0.0.7
 
 Add VSCode recommendation files to generated projects
+
+### 0.0.8
+
+Switch to Project Initializer
 

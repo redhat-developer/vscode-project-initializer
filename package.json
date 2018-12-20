@@ -1,15 +1,16 @@
 {
-    "name": "fabric8-launcher-vscode-extension",
-    "displayName": "fabric8-launcher-vscode-extension",
-    "description": "A lightweight extension based on Fabric8 launcher to generate quickstart projects ",
-    "version": "0.0.7",
+    "name": "project-initializer",
+    "displayName": "Project Initializer by Red Hat",
+    "description": "A lightweight extension based on Red Hat launcher to generate quickstart projects using VSCode",
+    "version": "0.0.8",
     "license": "EPL-1.0",
-    "publisher": "jeffmaury",
-    "icon": "icons/fabric8.png",
-    "homepage": "https://github.com/jeffmaury/fabric8-launcher-vscode-extensionb/blob/master/README.md",
+    "publisher": "redhat",
+    "author": "Red Hat",
+    "icon": "icons/Project Initializer.png",
+    "homepage": "https://github.com/fabric8-launcher/launcher-vscode-extension/blob/master/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jeffmaury/fabric8-launcher-vscode-extension"
+        "url": "https://github.com/fabric8-launcher/launcher-vscode-extension"
     },
     "engines": {
         "vscode": "^1.19.0"
@@ -18,38 +19,38 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:fabric8.launcher.generate"
+        "onCommand:project.initializer.generate"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [{
-            "command": "fabric8.launcher.generate",
-            "title": "Generate a project from Fabric8 launcher",
-            "category": "Fabric8"
+            "command": "project.initializer.generate",
+            "title": "Generate a project using Project Initializer",
+            "category": "Project"
         }],
         "configuration": {
-            "title": "Fabric8 launcher",
+            "title": "Project initializer",
             "properties": {
-              "fabric8.launcher.endpointUrl": {
+              "project.initializer.endpointUrl": {
                 "default": "https://forge.api.openshift.io/api/",
                 "type": "string",
                 "pattern": "https?://.*/",
                 "scope": "window",
-                "description": "Fabric8 launcher endpoint URL."
+                "description": "Project Initializer endpoint URL."
               },
-              "fabric8.launcher.defaultGroupId": {
+              "project.initializer.defaultGroupId": {
                 "default": "io.openshift",
                 "type": "string",
                 "scope": "window",
                 "description": "Default value for Group Id."
               },
-              "fabric8.launcher.defaultArtifactId": {
+              "project.initializer.defaultArtifactId": {
                 "default": "booster",
                 "type": "string",
                 "scope": "window",
                 "description": "Default value for Artifact Id."
               },
-              "fabric8.launcher.defaultVersion": {
+              "project.initializer.defaultVersion": {
                 "default": "0.0.1-SNAPSHOT",
                 "type": "string",
                 "scope": "window",
