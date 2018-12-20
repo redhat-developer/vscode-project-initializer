@@ -62,3 +62,7 @@ Files are now extracted at the root of the workspace folder
 
 Add VSCode recommendation files to generated projects
 
+### 0.0.8
+
+Switch to Project Initializer
+
