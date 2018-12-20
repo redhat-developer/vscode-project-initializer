@@ -3,7 +3,7 @@
 node('rhel7'){
 	stage('Checkout repo') {
 		deleteDir()
-		git url: 'https://github.com/fabric8-launcher/launcher-vscode-extension.git'
+		git url: 'https://github.com/fabric8-launcher/launcher-vscode-extension'
 	}
 
 	stage('Install requirements') {
