@@ -19,7 +19,8 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:project.initializer.generate"
+        "onCommand:project.initializer.generate",
+        "onCommand:project.initializer.generate.camelfuse"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -27,6 +28,11 @@
             {
                 "command": "project.initializer.generate",
                 "title": "Generate a project using Project Initializer",
+                "category": "Project"
+            },
+            {
+                "command": "project.initializer.generate.camelfuse",
+                "title": "Generate a Camel/Fuse project using Project Initializer",
                 "category": "Project"
             }
         ],
