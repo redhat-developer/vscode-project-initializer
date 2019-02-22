@@ -3,9 +3,11 @@ import * as assert from 'assert';
 import { Catalog } from '../Catalog';
 import * as initializer from '../extension';
 
-suite("Extension Tests for Camel/Fuse", function () {
+suite("Extension Tests for Runtimes", function () {
 
-    test('Should Filter missions with Camel/Fuse runtime support', function() {
+
+
+    test('Should Filter missions with specific runtime support', function() {
         let catalog = JSON.parse(`
         {
             "boosters": [
@@ -13,14 +15,14 @@ suite("Extension Tests for Camel/Fuse", function () {
                     "mission": "mission1",
                     "name": "booster1.1",
                     "description": "booster1.1",
-                    "runtime": "fuse",
+                    "runtime": "runtimeId1",
                     "version": "community"
                 },
                 {
                     "mission": "mission1",
                     "name": "booster1.2",
                     "description": "booster1.2",
-                    "runtime": "camel",
+                    "runtime": "runtimeId2",
                     "version": "redhat"
                 },
                 {
@@ -40,7 +42,7 @@ suite("Extension Tests for Camel/Fuse", function () {
             ],
             "runtimes": [
                 {
-                    "id": "fuse",
+                    "id": "runtimeId1",
                     "name": "Fuse",
                     "description": "The Fuse runtime",
                     "versions": [
@@ -68,7 +70,7 @@ suite("Extension Tests for Camel/Fuse", function () {
                 }
             ]
         }`);
-        let filteredCatalog = initializer.filterCatalogForCamelFuse(catalog);
+        let filteredCatalog = initializer.filterCatalogForRuntimes(catalog, ["runtimeId1", "runtimeId2"]);
         assert.ok(filteredCatalog.missions.length === 1);
         assert.ok(filteredCatalog.missions[0].id === "mission1");
         assert.ok(filteredCatalog.missions[0].id === "mission1");
@@ -76,11 +78,40 @@ suite("Extension Tests for Camel/Fuse", function () {
         assert.ok(filteredCatalog.boosters.length === 2);
     });
     
-    test('Ensure Camel/Fuse runtime id available in Catalog', function() {
+    let catalogPromise:Promise<any>;
+
+    this.beforeAll(function() {
         let catalog = new Catalog('https://forge.api.openshift.io/api/');
-        return catalog.getCatalog().then(res => {
-            assert.ok(res.runtimes.filter((runtime:any) => {return runtime.id === "fuse" || runtime.id === "camel";}).length !== 0);
-        });
+        catalogPromise = catalog.getCatalog();
     });
+    
+    test('Ensure at least one booster still exists for Camel/Fuse runtime', function() {
+        return checkAtLeastOneMissionForRuntimes(catalogPromise, initializer.CAMEL_FUSE_RUNTIME_IDS);
+    });
+    
+    test('Ensure at least one booster still exists for Golang runtime', function() {
+        return checkAtLeastOneMissionForRuntimes(catalogPromise, initializer.GOLANG_RUNTIME_IDS);
+    });
+    test('Ensure at least one booster still exists for NodeJS runtime', function() {
+        return checkAtLeastOneMissionForRuntimes(catalogPromise, initializer.NODEJS_RUNTIME_IDS);
+    });
+    test('Ensure at least one booster still exists for Spring Boot runtime', function() {
+        return checkAtLeastOneMissionForRuntimes(catalogPromise, initializer.SPRINGBOOT_RUNTIME_IDS);
+    });
+    test('Ensure at least one booster still exists for Thorntail runtime', function() {
+        return checkAtLeastOneMissionForRuntimes(catalogPromise, initializer.THORNTAIL_RUNTIME_IDS);
+    });
+    test('Ensure at least one booster still exists for Vert.x runtime', function() {
+        return checkAtLeastOneMissionForRuntimes(catalogPromise, initializer.VERTX_RUNTIME_IDS);
+    });
+    
+    function checkAtLeastOneMissionForRuntimes(catalog:Promise<any>, runtimeIds:string[]) {
+        return catalog.then((catalog) => {
+            let filteredCatalog = initializer.filterCatalogForRuntimes(catalog, runtimeIds);
+            assert.ok(filteredCatalog.missions.length >= 1);
+        });
+    }
 
 });
+
+

@@ -33,7 +33,7 @@ suite("Extension Tests", function () {
             let myCommands = commands.filter(function(value){
                 return value.startsWith('project.initializer');
             });
-            assert.equal(myCommands.length, 2, 'Some commands are not registered properly or a new command is not added to the test');
+            assert.equal(myCommands.length, 7, 'Some commands are not registered properly or a new command is not added to the test');
         });
     });
 
