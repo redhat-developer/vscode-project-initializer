@@ -30,3 +30,7 @@
 ### 0.0.8
 
 Switch to Project Initializer
+
+### 0.0.9
+
+- Specific commands are available to create project by choosing Runtime first
