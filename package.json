@@ -20,7 +20,12 @@
     ],
     "activationEvents": [
         "onCommand:project.initializer.generate",
-        "onCommand:project.initializer.generate.camelfuse"
+        "onCommand:project.initializer.generate.camelfuse",
+        "onCommand:project.initializer.generate.golang",
+        "onCommand:project.initializer.generate.nodejs",
+        "onCommand:project.initializer.generate.springboot",
+        "onCommand:project.initializer.generate.thorntail",
+        "onCommand:project.initializer.generate.vertx"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -33,6 +38,31 @@
             {
                 "command": "project.initializer.generate.camelfuse",
                 "title": "Generate a Camel/Fuse project using Project Initializer",
+                "category": "Project"
+            },
+            {
+                "command": "project.initializer.generate.vertx",
+                "title": "Generate an Eclipse Vert.x project using Project Initializer",
+                "category": "Project"
+            },
+            {
+                "command": "project.initializer.generate.springboot",
+                "title": "Generate a Spring Boot project using Project Initializer",
+                "category": "Project"
+            },
+            {
+                "command": "project.initializer.generate.golang",
+                "title": "Generate a Go project using Project Initializer",
+                "category": "Project"
+            },
+            {
+                "command": "project.initializer.generate.nodejs",
+                "title": "Generate a NodeJS project using Project Initializer",
+                "category": "Project"
+            },
+            {
+                "command": "project.initializer.generate.thorntail",
+                "title": "Generate a Thorntail project using Project Initializer",
                 "category": "Project"
             }
         ],

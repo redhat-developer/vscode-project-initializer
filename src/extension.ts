@@ -8,6 +8,12 @@ let fs = require('fs');
 let p = require('path');
 
 let catalogBuilder:Catalog = new Catalog(vscode.workspace.getConfiguration("project.initializer").get<string>("endpointUrl", "https://forge.api.openshift.io/api/"));
+export const CAMEL_FUSE_RUNTIME_IDS = ['camel', 'fuse'];
+export const VERTX_RUNTIME_IDS = ['vert.x'];
+export const GOLANG_RUNTIME_IDS = ['golang'];
+export const NODEJS_RUNTIME_IDS = ['nodejs'];
+export const THORNTAIL_RUNTIME_IDS = ['thorntail'];
+export const SPRINGBOOT_RUNTIME_IDS = ['spring-boot'];
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -16,12 +22,22 @@ export function activate(context: vscode.ExtensionContext) {
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
     let genericGenerationCommand = vscode.commands.registerCommand('project.initializer.generate', () => generateFromAllChoices());
-    let fuseGenerationCommand = vscode.commands.registerCommand('project.initializer.generate.camelfuse', () => generateForCamelFuse());
+    let fuseGenerationCommand = registerCommandForRuntimes('camelfuse', CAMEL_FUSE_RUNTIME_IDS);
+    let vertxGenerationCommand = registerCommandForRuntimes('vertx', VERTX_RUNTIME_IDS);
+    let goLangGenerationCommand = registerCommandForRuntimes('golang', GOLANG_RUNTIME_IDS);
+    let nodeJSGenerationCommand = registerCommandForRuntimes('nodejs', NODEJS_RUNTIME_IDS);
+    let thorntailGenerationCommand = registerCommandForRuntimes('thorntail', THORNTAIL_RUNTIME_IDS);
+    let springBootGenerationCommand = registerCommandForRuntimes('springboot', SPRINGBOOT_RUNTIME_IDS);
 
     let disposableListener = vscode.workspace.onDidChangeConfiguration(event => {updateCatalog(event)});
 
     context.subscriptions.push(genericGenerationCommand);
     context.subscriptions.push(fuseGenerationCommand);
+    context.subscriptions.push(vertxGenerationCommand);
+    context.subscriptions.push(goLangGenerationCommand);
+    context.subscriptions.push(nodeJSGenerationCommand);
+    context.subscriptions.push(thorntailGenerationCommand);
+    context.subscriptions.push(springBootGenerationCommand);
     context.subscriptions.push(disposableListener);
 }
 
@@ -34,23 +50,27 @@ function updateCatalog(event: vscode.ConfigurationChangeEvent) {
     }
 }
 
-async function generateForCamelFuse() {
+function registerCommandForRuntimes(commandIdSuffix: string, runtimeIds:string[]) {
+    return vscode.commands.registerCommand('project.initializer.generate.'+commandIdSuffix, () => generateForRuntimes(runtimeIds));
+}
+
+async function generateForRuntimes(runtimeIds:string[]) {
     try {
         let catalog = await catalogBuilder.getCatalog();
-        await generate(filterCatalogForCamelFuse(catalog));
+        await generate(filterCatalogForRuntimes(catalog, runtimeIds));
     }
     catch (error) {
         vscode.window.showErrorMessage("Error while processing Project Initializer" + error);
     }
 }
 
-export function filterCatalogForCamelFuse(catalog: any) {
+export function filterCatalogForRuntimes(catalog: any, runtimeIds:string[]) {
     let filteredCatalog = JSON.parse(JSON.stringify(catalog));
-    filteredCatalog.runtimes = catalog.runtimes.filter((runtime: any) => { return runtime.id === "fuse" || runtime.id === "camel"; });
-    let camelFuseBoosters = catalog.boosters.filter((booster: any) => { return booster.runtime === "fuse" || booster.runtime === "camel"; });
-    filteredCatalog.boosters = camelFuseBoosters;
-    let camelFuseMissionIds = camelFuseBoosters.map((camelFuseBooster:any) => {return camelFuseBooster.mission;});
-    filteredCatalog.missions = catalog.missions.filter((mission:any) => {return camelFuseMissionIds.includes(mission.id);});
+    filteredCatalog.runtimes = catalog.runtimes.filter((runtime: any) => { return runtimeIds.indexOf(runtime.id) > -1;});
+    let filteredBoosters = catalog.boosters.filter((booster: any) => { return runtimeIds.indexOf(booster.runtime) > -1;});
+    filteredCatalog.boosters = filteredBoosters;
+    let filteredMissionIds = filteredBoosters.map((booster:any) => {return booster.mission;});
+    filteredCatalog.missions = catalog.missions.filter((mission:any) => {return filteredMissionIds.includes(mission.id);});
     return filteredCatalog;
 }
 
