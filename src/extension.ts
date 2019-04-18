@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { Catalog } from './Catalog';
-import * as yauzl from 'yauzl'
+import * as yauzl from 'yauzl';
 let fs = require('fs');
 let p = require('path');
 
@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
     let thorntailGenerationCommand = registerCommandForRuntimes('thorntail', THORNTAIL_RUNTIME_IDS);
     let springBootGenerationCommand = registerCommandForRuntimes('springboot', SPRINGBOOT_RUNTIME_IDS);
 
-    let disposableListener = vscode.workspace.onDidChangeConfiguration(event => {updateCatalog(event)});
+    let disposableListener = vscode.workspace.onDidChangeConfiguration(event => {updateCatalog(event);});
 
     context.subscriptions.push(genericGenerationCommand);
     context.subscriptions.push(fuseGenerationCommand);
@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
 function updateCatalog(event: vscode.ConfigurationChangeEvent) {
     if (event.affectsConfiguration("project.initializer.endpointUrl")) {
         let url = vscode.workspace.getConfiguration("project.initializer").get<string>("endpointUrl", "https://forge.api.openshift.io/api/");
-        if (catalogBuilder.endpoint != url) {
+        if (catalogBuilder.endpoint !== url) {
             catalogBuilder = new Catalog(url);
         }
     }
@@ -125,7 +125,7 @@ function extract(content:Buffer, path:string) {
         zipfile!.on("entry", (entry:yauzl.Entry) => {
             console.log("Processing " + entry.fileName);
             let entryPath = removeFirstLevel(entry.fileName);
-            if (entryPath != "/") {
+            if (entryPath !== "/") {
                 let mappedPath = p.resolve(path, p.normalize(entryPath));
                 if (entryPath.endsWith("/")) {
                     fs.mkdirSync(mappedPath);
@@ -146,7 +146,7 @@ function extract(content:Buffer, path:string) {
 
 function removeFirstLevel(path:string) {
     let index = path.indexOf("/");
-    if (index != (-1)) {
+    if (index !== (-1)) {
         path = path.substring(index + 1);
     }
     return path;
