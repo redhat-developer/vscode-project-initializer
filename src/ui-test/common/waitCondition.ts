@@ -1,0 +1,3 @@
+interface WaitCondition {
+    test(): boolean;
+}
