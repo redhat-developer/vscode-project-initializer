@@ -134,7 +134,7 @@ function extract(content:Buffer, path:string) {
                         if (err) {
                             throw err;
                         }
-                        stream!.pipe(fs.createWriteStream(mappedPath));
+                        stream!.pipe(fs.createWriteStream(mappedPath, {mode: entry.externalFileAttributes >>> 16}));
                     });
                 }
             }
