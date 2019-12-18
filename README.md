@@ -1,7 +1,7 @@
 # Project Initializer
 
-[![Build Status](https://travis-ci.com/fabric8-launcher/launcher-vscode-extension.svg?branch=master)](https://travis-ci.com/fabric8-launcher/launcher-vscode-extension)
-[![Build status](https://ci.appveyor.com/api/projects/status/bndhekqk8lnj0s99?svg=true)](https://ci.appveyor.com/project/fabric8-launcher/launcher-vscode-extension)
+[![Build Status](https://travis-ci.com/redhat-developer/vscode-project-initializer.svg?branch=master)](https://travis-ci.com/redhat-developer/vscode-project-initializer)
+[![Build status](https://ci.appveyor.com/api/projects/status/bndhekqk8lnj0s99?svg=true)](https://ci.appveyor.com/project/redhat-developer/vscode-project-initializer)
 
 ## Overview
 
