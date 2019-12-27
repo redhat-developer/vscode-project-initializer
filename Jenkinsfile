@@ -28,7 +28,8 @@ node('rhel7'){
 
 	stage('Package') {
         def packageJson = readJSON file: 'package.json'
-        sh "vsce package -o project_initializer-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
+        sh "vsce package -o project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
+		sh "npm pack && mv project-initializer-${packageJson.version}.tgz project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.tgz
 	}
 
 	if(params.UPLOAD_LOCATION) {
@@ -36,6 +37,8 @@ node('rhel7'){
 			def filesToPush = findFiles(glob: '**.vsix')
 			sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${filesToPush[0].path} ${UPLOAD_LOCATION}/snapshots/vscode-project-initializer/"
             stash name:'vsix', includes:filesToPush[0].path
+			filesToPush = findFiles(glob: '**.tgz')
+			stash name:'tgz', includes:filesToPush[0].path
 		}
     }
 }
@@ -48,15 +51,18 @@ node('rhel7'){
 
 		stage("Publish to Marketplace") {
             unstash 'vsix'
+			unstash 'tgz'
             withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
                 def vsix = findFiles(glob: '**.vsix')
                 sh 'vsce publish -p ${TOKEN} --packagePath' + " ${vsix[0].path}"
             }
-            archive includes:"**.vsix"
+            archive includes:"**.vsix","**.tgz"
 
             stage "Promote the build to stable"
             def vsix = findFiles(glob: '**.vsix')
             sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/stable/vscode-project-initializer/"
+            def tgz = findFiles(glob: '**.tgz')
+            sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${tgz[0].path} ${UPLOAD_LOCATION}/stable/vscode-project-initializer/"
         }
 	}
 }
