@@ -29,7 +29,7 @@ node('rhel7'){
     stage('Package') {
         def packageJson = readJSON file: 'package.json'
         sh "vsce package -o project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
-        sh "npm pack && mv project-initializer-${packageJson.version}.tgz project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.tgz
+        sh "npm pack && mv project-initializer-${packageJson.version}.tgz project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.tgz"
     }
 
     if(params.UPLOAD_LOCATION) {
