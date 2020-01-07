@@ -1,11 +1,14 @@
-import { Workbench, QuickPickItem, InputBox } from "vscode-extension-tester";
-import { waitForEvent } from "./testUtils";
-
-export async function openCommandPrompt() {
+import { Workbench, QuickPickItem, QuickOpenBox, Notification, InputBox } from "vscode-extension-tester";
+import * as fs from "fs";
+let path = require('path');
+/**
+ * @author Ondrej Dockal <odockal@redhat.com>
+ */
+async function openCommandPrompt() {
     return new Workbench().openCommandPrompt();
 }
 
-export async function runCommands(...commands: string []) {
+async function runCommands(...commands: string []) {
     const commandPrompt = await openCommandPrompt();
     for (let index = 0; index < commands.length; index++) {
         const command = commands[index];
@@ -15,45 +18,105 @@ export async function runCommands(...commands: string []) {
     return commandPrompt;
 }
 
-export async function openCommandPromptGetOptions(command: string) {
-    console.log('Open command palette prompt');
-    const commandPrompt = await new Workbench().openCommandPrompt();
-    console.log('Typing ' + command);
+async function typeCommandConfirm(command: string) {
+    const prompt = await QuickOpenBox.create();
+    await prompt.setText(command);
+    await prompt.confirm();
+}
+
+ async function getCommandPromptOptions(command: string) {
+    const commandPrompt = await QuickOpenBox.create();
     await commandPrompt.setText(command);
     const options = await commandPrompt.getQuickPicks();
-    return logArray(options);
-}
+    return convertArrayObjectsToText<QuickPickItem>(options);
+ }
 
-export async function openCommandPromptGetOptionsOnLast(...commands: string []) {
-    console.log('Open command palette prompt');
-    const commandPrompt = await openCommandPrompt();
-    for (let index = 0; index < commands.length-1; index++) {
-        const command = commands[index];
-        console.log('Typing ' + command);
-        await commandPrompt.setText(command);
-        console.log('Confirming');
-        await commandPrompt.confirm();
-    }
-    const lastCommand = commands[commands.length - 1];
-    console.log('Typing command: ' + lastCommand);
-    await commandPrompt.setText(lastCommand);
-    await commandPrompt.confirm();
-    await waitForEvent((<WaitCondition>{
-        test: function() {
-            return false;
-        }
-    }), 5000);
-    const input = await new InputBox();
-    const options = await input.getQuickPicks();
-    return logArray(options);
-}
-
-export async function logArray(array: QuickPickItem[]) {
+async function convertArrayObjectsToText<T extends QuickPickItem>(array: T[]) {
     let options = [];
     for (let index = 0; index < array.length; index++) {
-        const element = await array[index].getText();
-        console.log(element);
-        options.push(element);
+        const element = await array[index].getLabel();
+        options.push(element.toString());
     }
     return options;
 }
+
+async function convertArrayObjectsToTextAndDescription<T extends QuickPickItem>(array: T[]) {
+    let options = [];
+    for (let index = 0; index < array.length; index++) {
+        const label = await array[index].getLabel();
+        const description = await array[index].getDescription();
+        // const description = await array[index].findElement(By.className("label-description")).getText();
+        options.push(label + " " + description);
+    }
+    return options;
+}
+
+async function getIndexOfQuickPickItem(fulltext: string, array: QuickPickItem[]) {
+    let index = -1;
+    for (let item of array) {
+        const text = await item.getLabel();
+        const description = await item.getDescription();
+        if (fulltext === text + " " + description) {
+            return item.getIndex();
+        }
+    }
+    return index;
+}
+
+async function notificationExists(text: string): Promise<Notification | undefined> {
+    const notifications = await new Workbench().getNotifications();
+    for (const notification of notifications) {
+        const message = await notification.getMessage();
+        if (message.indexOf(text) >= 0) {
+            return notification;
+        }
+    }
+}
+
+async function removeFolderFromWorkspace(dir: string) {
+    await openCommandPrompt();
+    await typeCommandConfirm(">Workspaces: Remove Folder from workspace");
+    const input = await InputBox.create();
+    let dirs = await convertArrayObjectsToText(await input.getQuickPicks());
+    if (dirs.filter( item => { return item.indexOf(dir) === 0;}).length === 0) {
+        throw Error("Folder " + dir + " is not set as workspace, cannot be removed, available folders: " + dirs);
+    }
+    await input.selectQuickPick(dir);
+}
+
+async function addFolderToWorkspace(dir: string) {
+    await openCommandPrompt();
+    const quick = await QuickOpenBox.create();
+    await quick.setText(">Extest: Add Folder");
+    await quick.confirm();
+    let confirmedPrompt = await InputBox.create();
+    await confirmedPrompt.setText(dir);
+    await confirmedPrompt.confirm();
+}
+
+function removeFilePathRecursively(filepath: string, includeRootDir: boolean = false) {
+    if (fs.lstatSync(filepath).isDirectory()) {
+        for (let file of fs.readdirSync(filepath)) {
+            removeFilePathRecursively(filepath + path.sep + file, true);
+        }
+        if (includeRootDir) {
+            fs.rmdirSync(filepath);
+        }
+    } else {
+        fs.unlinkSync(filepath);
+    }
+}
+
+export { 
+    convertArrayObjectsToText, 
+    typeCommandConfirm,
+    getCommandPromptOptions,
+    openCommandPrompt,
+    runCommands, 
+    notificationExists, 
+    convertArrayObjectsToTextAndDescription,
+    getIndexOfQuickPickItem,
+    addFolderToWorkspace,
+    removeFolderFromWorkspace,
+    removeFilePathRecursively
+};

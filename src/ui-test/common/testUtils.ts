@@ -1,19 +1,8 @@
 import { fail } from "assert";
 
-export async function waitForEvent(myEvent: WaitCondition, ms = 1000) {
-    let timeout = ms / 1000;
-    console.log("Wait will wait for timeout: " + timeout + " s");
-    while(timeout-- > 0) {
-        console.log('Counter value: ' + timeout);
-        if (myEvent.test()) {
-            return;
-        }
-        await sleep(1000);
-    }
-    throw Error('Waiting for the condition failed');
-}
-
-// default sleep promise returning function
+/**
+ * @author Ondrej Dockal <odockal@redhat.com>
+ */
 export function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

@@ -1,7 +1,14 @@
-import { extensionInCommandPromptTest } from "./extensionTest";
-import { testCommandPalette } from "./commandPaletteOptionsTest";
+// import { baseExtensionUITest } from "./baseExtensionTest";
+// import { testCommandPaletteOffering } from "./commandPaletteOptionsTest";
+import { testCreatingCamelProject } from "./camelProjectCreateTest";
+// import { testFuseProjectOffering } from "./camelProjectOfferingTest";
 
+/**
+ * @author Ondrej Dockal <odockal@redhat.com>
+ */
 describe("Project initializer UI tests", () => {
-    extensionInCommandPromptTest();
-    testCommandPalette();
+   // baseExtensionUITest();
+   // testCommandPaletteOffering();
+   testCreatingCamelProject();
+   // testFuseProjectOffering();
 });

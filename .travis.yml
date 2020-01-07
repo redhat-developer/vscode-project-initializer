@@ -13,3 +13,4 @@ install:
 
 script:
   - npm test --silent
+  - npm run ui-test

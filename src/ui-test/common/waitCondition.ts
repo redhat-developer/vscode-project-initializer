@@ -1,3 +1,0 @@
-interface WaitCondition {
-    test(): boolean;
-}
