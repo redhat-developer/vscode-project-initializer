@@ -1,11 +1,18 @@
 # Test against the latest version of this Node.js version
 environment:
-  nodejs_version: "6"
+  nodejs_version: "12"
 
-# Install scripts. (runs after repo cloning)
+
+platform:
+  - x64
+
+# Install scripts. git a(runs after repo cloning)
 install:
+  # long path on win platform
+  - md C:\npm-cache
+  - npm config set cache C:\npm-cache
   # Get the latest stable version of Node.js or io.js
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version x64
   # install modules
   - npm install
 
@@ -16,6 +23,7 @@ test_script:
   - npm --version
   # run tests
   - npm test
+  - npm run ui-test
 
 # Don't actually build.
 build: off
