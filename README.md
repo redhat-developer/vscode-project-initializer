@@ -1,5 +1,7 @@
 # Project Initializer
 
+[![Visual Studio Marketplace](https://vsmarketplacebadge.apphb.com/version/redhat.project-initializer.svg)](https://marketplace.visualstudio.com/items?itemName=redhat.project-initializer)
+[![Visual Studio Marketplace](https://vsmarketplacebadge.apphb.com/installs/redhat.project-initializer.svg)](https://marketplace.visualstudio.com/items?itemName=redhat.project-initializer)
 [![Build Status](https://travis-ci.com/redhat-developer/vscode-project-initializer.svg?branch=master)](https://travis-ci.com/redhat-developer/vscode-project-initializer)
 [![Build status](https://ci.appveyor.com/api/projects/status/bndhekqk8lnj0s99?svg=true)](https://ci.appveyor.com/project/redhat-developer/vscode-project-initializer)
 
