@@ -6,6 +6,7 @@
     "license": "EPL-2.0",
     "publisher": "redhat",
     "author": "Red Hat",
+    "preview": true,
     "icon": "icons/Project_Initializer.png",
     "homepage": "https://github.com/fabric8-launcher/launcher-vscode-extension/blob/master/README.md",
     "repository": {
