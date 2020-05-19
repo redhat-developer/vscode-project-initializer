@@ -1,5 +1,6 @@
-import { Workbench, QuickPickItem, InputBox, Notification } from "vscode-extension-tester";
+import { Workbench, QuickPickItem, InputBox, Notification, VSBrowser, QuickOpenBox } from "vscode-extension-tester";
 import * as fs from "fs";
+import { expect } from "chai";
 
 let path = require('path');
 /**
@@ -19,10 +20,43 @@ async function runCommands(...commands: string[]) {
     return commandPrompt;
 }
 
-async function typeCommandConfirm(command: string) {
+async function waitForQuickPick(input: InputBox | QuickOpenBox, quickPickValue: string, timeout: number = 6000, message?: string): Promise<QuickPickItem> {
+    message = message || `Could not find option with value: ${quickPickValue}.`;
+
+    const hasText = async (quickPick: QuickPickItem, text: string) => await quickPick.getText() === text;
+
+    const findQuickPick = async () => {
+        const q = await input.getQuickPicks().catch(() => []);
+        return q.find(q => hasText(q, quickPickValue));
+    };
+
+    const quickPick = await VSBrowser.instance.driver.wait(findQuickPick, timeout, message);
+
+    if (quickPick === undefined) {
+        expect.fail(message);
+    }
+    return quickPick as QuickPickItem;
+}
+
+async function verifyQuickPicks(input: InputBox | QuickOpenBox, quickPickValues: string[], timeout?: number, message?: string): Promise<void> {
+    const quickPicks = await Promise.all(quickPickValues.map((option: string) => {
+        return waitForQuickPick(input, option, timeout, message);
+    })).catch(expect.fail);
+    expect(quickPicks.length,
+        `Quick pick menu does not have ${quickPickValues.length} entires. Actual number of entries: ${quickPicks.length}`)
+        .to.be.equal(quickPickValues.length);
+}
+
+async function typeCommandConfirm(command: string, useQuickPick: boolean = false) {
     const prompt = await InputBox.create();
     await prompt.setText(command);
-    await prompt.confirm();
+    if (useQuickPick) {
+        const option = await waitForQuickPick(prompt, command);
+        await option.click();
+    }
+    else {
+        await prompt.confirm();
+    }
 }
 
 async function getCommandPromptOptions(command: string) {
@@ -65,7 +99,7 @@ async function getIndexOfQuickPickItem(fulltext: string, array: QuickPickItem[])
 }
 
 async function notificationExists(text: string): Promise<Notification | undefined> {
-    const notifications = await new Workbench().getNotifications();
+    const notifications = await new Workbench().getNotifications().catch(() => []);
     for (const notification of notifications) {
         const message = await notification.getMessage();
         if (message.indexOf(text) >= 0) {
@@ -110,6 +144,8 @@ function removeFilePathRecursively(filepath: string, includeRootDir: boolean = f
 
 export {
     convertArrayObjectsToText,
+    waitForQuickPick,
+    verifyQuickPicks,
     typeCommandConfirm,
     getCommandPromptOptions,
     openCommandPrompt,

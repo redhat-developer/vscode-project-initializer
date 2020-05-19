@@ -1,5 +1,5 @@
-import { openCommandPrompt, removeFilePathRecursively, getIndexOfQuickPickItem, notificationExists } from "./common/commonUtils";
 import { InputBox, QuickOpenBox, ActivityBar, Notification, TreeItem, WebDriver, VSBrowser } from "vscode-extension-tester";
+import { openCommandPrompt, removeFilePathRecursively, getIndexOfQuickPickItem, notificationExists, typeCommandConfirm } from "./common/commonUtils";
 import * as fs from "fs";
 import { ProjectInitializer } from "./common/projectInitializerConstants";
 import { expect } from "chai";
@@ -43,9 +43,8 @@ export function testCreatingCamelProject() {
         CAMEL_MISSIONS_EXPECTED.forEach( async function(mission) {
             it('Test creating Camel/Fuse project: ' + mission + ", runtime & version: " + RUNTIME_VERSION, async function () {
                 this.timeout(20000); 
-                const commandPrompt = await openCommandPrompt();
-                await commandPrompt.setText('>Project: ');
-                await commandPrompt.selectQuickPick(ProjectInitializer.PI_GENERAL.camel);
+                await openCommandPrompt();
+                await typeCommandConfirm(`>${ProjectInitializer.PI_GENERAL.camel}`, true);
                 inputBox = await InputBox.create();
                 await inputBox.selectQuickPick(mission);
                 inputBox = await InputBox.create();
