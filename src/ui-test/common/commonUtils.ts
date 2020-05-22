@@ -1,5 +1,6 @@
-import { Workbench, QuickPickItem, QuickOpenBox, Notification, InputBox } from "vscode-extension-tester";
+import { Workbench, QuickPickItem, InputBox, Notification } from "vscode-extension-tester";
 import * as fs from "fs";
+
 let path = require('path');
 /**
  * @author Ondrej Dockal <odockal@redhat.com>
@@ -8,7 +9,7 @@ async function openCommandPrompt() {
     return new Workbench().openCommandPrompt();
 }
 
-async function runCommands(...commands: string []) {
+async function runCommands(...commands: string[]) {
     const commandPrompt = await openCommandPrompt();
     for (let index = 0; index < commands.length; index++) {
         const command = commands[index];
@@ -19,17 +20,17 @@ async function runCommands(...commands: string []) {
 }
 
 async function typeCommandConfirm(command: string) {
-    const prompt = await QuickOpenBox.create();
+    const prompt = await InputBox.create();
     await prompt.setText(command);
     await prompt.confirm();
 }
 
- async function getCommandPromptOptions(command: string) {
-    const commandPrompt = await QuickOpenBox.create();
+async function getCommandPromptOptions(command: string) {
+    const commandPrompt = await InputBox.create();
     await commandPrompt.setText(command);
     const options = await commandPrompt.getQuickPicks();
     return convertArrayObjectsToText<QuickPickItem>(options);
- }
+}
 
 async function convertArrayObjectsToText<T extends QuickPickItem>(array: T[]) {
     let options = [];
@@ -78,7 +79,7 @@ async function removeFolderFromWorkspace(dir: string) {
     await typeCommandConfirm(">Workspaces: Remove Folder from workspace");
     const input = await InputBox.create();
     let dirs = await convertArrayObjectsToText(await input.getQuickPicks());
-    if (dirs.filter( item => { return item.indexOf(dir) === 0;}).length === 0) {
+    if (dirs.filter(item => { return item.indexOf(dir) === 0; }).length === 0) {
         throw Error("Folder " + dir + " is not set as workspace, cannot be removed, available folders: " + dirs);
     }
     await input.selectQuickPick(dir);
@@ -86,7 +87,7 @@ async function removeFolderFromWorkspace(dir: string) {
 
 async function addFolderToWorkspace(dir: string) {
     await openCommandPrompt();
-    const quick = await QuickOpenBox.create();
+    const quick = await InputBox.create();
     await quick.setText(">Extest: Add Folder");
     await quick.confirm();
     let confirmedPrompt = await InputBox.create();
@@ -107,13 +108,13 @@ function removeFilePathRecursively(filepath: string, includeRootDir: boolean = f
     }
 }
 
-export { 
-    convertArrayObjectsToText, 
+export {
+    convertArrayObjectsToText,
     typeCommandConfirm,
     getCommandPromptOptions,
     openCommandPrompt,
-    runCommands, 
-    notificationExists, 
+    runCommands,
+    notificationExists,
     convertArrayObjectsToTextAndDescription,
     getIndexOfQuickPickItem,
     addFolderToWorkspace,

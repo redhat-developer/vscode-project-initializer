@@ -16,7 +16,7 @@ const GENERAL_PROJECT_EXPECTED = [
 export function testCommandPaletteOffering() {
     describe('Verify Project initializer Command palette options', () => {
 
-        let inputBox: QuickOpenBox;
+        let inputBox: InputBox | QuickOpenBox;
 
         it('Command palette should show proper options on the first level', async function () {
             this.timeout(5000);
