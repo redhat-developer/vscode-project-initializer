@@ -15,7 +15,7 @@ const CAMEL_MISSIONS_EXPECTED = [
 export function testFuseProjectOffering() {
     describe('Verify Project initializer Camel/Fuse Command palette options', async function() {
 
-        let inputBox: QuickOpenBox;
+        let inputBox: InputBox | QuickOpenBox;
         let catalogFuse: any;
 
         before(async function() {

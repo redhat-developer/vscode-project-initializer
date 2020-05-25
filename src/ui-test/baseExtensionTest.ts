@@ -1,4 +1,4 @@
-import { ExtensionsViewSection, ActivityBar, ExtensionsViewItem, QuickOpenBox } from 'vscode-extension-tester';
+import { ExtensionsViewSection, ActivityBar, ExtensionsViewItem, InputBox, QuickOpenBox } from 'vscode-extension-tester';
 import { ProjectInitializer } from './common/projectInitializerConstants';
 import { openCommandPrompt } from './common/commonUtils';
 import { expect } from 'chai';
@@ -6,7 +6,7 @@ import { expect } from 'chai';
 export function baseExtensionUITest() {
     describe('Verify extension\'s base assets available after install', () => {
 
-        let inputBox: QuickOpenBox;
+        let inputBox: InputBox | QuickOpenBox;
 
         it('Command Palette prompt knows project initializer commands', async function () {
             this.timeout(4000);
