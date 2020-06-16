@@ -19,7 +19,7 @@ A lightweight extension based on Red Hat Launcher to generate quickstart project
 
 First you need to "open the folder" in VS Code in which you want to create the project.
 
-Then, you can trigger the Project Initializer. It is available from Palette command (Ctrl+Shift=P) with the name "Project: generate a project using Project Initializer":
+Then, you can trigger the Project Initializer. It is available from Palette command (Ctrl+Shift+P) with the name "Project: generate a project using Project Initializer":
 
 ![Project Initializer palette entry.](images/fabric8LauncherPaletteEntry.png "Project Initializer Palette entry")
 
