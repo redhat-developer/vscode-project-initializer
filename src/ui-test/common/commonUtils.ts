@@ -1,13 +1,38 @@
-import { Workbench, QuickPickItem, InputBox, Notification, VSBrowser, QuickOpenBox } from "vscode-extension-tester";
-import * as fs from "fs";
-import { expect } from "chai";
+import * as fs from 'fs';
+import { expect } from 'chai';
+import {
+    InputBox,
+    Key,
+    Notification,
+    QuickOpenBox,
+    QuickPickItem,
+    VSBrowser,
+    Workbench
+} from 'vscode-extension-tester';
 
 let path = require('path');
+
+interface QuickPickWaiterArgs {
+    input: InputBox | QuickOpenBox;
+    quickPickText: string;
+    quickPickGetter?: () => Promise<string>;
+    timeout?: number;
+    message?: string;
+}
+
 /**
  * @author Ondrej Dockal <odockal@redhat.com>
  */
-async function openCommandPrompt() {
-    return new Workbench().openCommandPrompt();
+async function openCommandPrompt(timeout: number = 6000): Promise<InputBox> {
+    const driver = VSBrowser.instance.driver;
+
+    return driver.wait(async () => {
+        // if cannot interact with vscode, return null
+        if (!await VSBrowser.instance.driver.actions().sendKeys(Key.F1).perform().then(() => true).catch(() => false)) {
+            return null;
+        }
+        return new InputBox().wait(750).catch(() => null);
+    }, timeout, "Could not open command pallette - timed out") as Promise<InputBox>;
 }
 
 async function runCommands(...commands: string[]) {
@@ -20,39 +45,64 @@ async function runCommands(...commands: string[]) {
     return commandPrompt;
 }
 
-async function waitForQuickPick(input: InputBox | QuickOpenBox, quickPickValue: string, timeout: number = 6000, message?: string): Promise<QuickPickItem> {
-    message = message || `Could not find option with value: ${quickPickValue}.`;
+async function waitForQuickPick(args: QuickPickWaiterArgs): Promise<QuickPickItem> | never {
+    args.message = args.message || "Could not find quick pick";
+    const quickPick = await VSBrowser.instance.driver.wait(async () => {
+        const quickPicks = await args.input.getQuickPicks();
+        const getter = args.quickPickGetter || QuickPickItem.prototype.getText;
 
-    const hasText = async (quickPick: QuickPickItem, text: string) => await quickPick.getText() === text;
+        for (const q of quickPicks) {
+            if (args.quickPickText === await getter.call(q)) {
+                return q;
+            }
+        }
 
-    const findQuickPick = async () => {
-        const q = await input.getQuickPicks().catch(() => []);
-        return q.find(q => hasText(q, quickPickValue));
-    };
-
-    const quickPick = await VSBrowser.instance.driver.wait(findQuickPick, timeout, message);
+        return undefined;
+    }, args.timeout || 6000, args.message);
 
     if (quickPick === undefined) {
-        expect.fail(message);
+        expect.fail(args.message);
     }
-    return quickPick as QuickPickItem;
+    else {
+        return quickPick;
+    }
 }
 
-async function verifyQuickPicks(input: InputBox | QuickOpenBox, quickPickValues: string[], timeout?: number, message?: string): Promise<void> {
+async function verifyQuickPicks(input: InputBox | QuickOpenBox, quickPickValues: string[], quickPickTextGetter = QuickPickItem.prototype.getText as () => Promise<string>, timeout?: number, message?: string): Promise<void> | never {
     const quickPicks = await Promise.all(quickPickValues.map((option: string) => {
-        return waitForQuickPick(input, option, timeout, message);
-    })).catch(expect.fail);
+        return waitForQuickPick({
+            input,
+            timeout,
+            quickPickText: option,
+            quickPickGetter: quickPickTextGetter,
+            message: `Could not find quick pick with value: ${option}`,
+        });
+    })).catch(async (e) => expect.fail(
+        `Could not find quick picks { ${quickPickValues.join(', ')} }
+         in { ${(await Promise.all((await input.getQuickPicks()).map(async (q) => await q.getText()))).join(', ')} }.
+        Error: ${e}`
+    ));
     expect(quickPicks.length,
         `Quick pick menu does not have ${quickPickValues.length} entires. Actual number of entries: ${quickPicks.length}`)
         .to.be.equal(quickPickValues.length);
 }
 
-async function typeCommandConfirm(command: string, useQuickPick: boolean = false) {
+async function typeCommandConfirm(command: string, quickPickTextGetter?: () => Promise<string>, quickPickTimeout?: number) {
+    if (!command.startsWith(">")) {
+        command = ">" + command;
+    }
+
     const prompt = await InputBox.create();
     await prompt.setText(command);
-    if (useQuickPick) {
-        const option = await waitForQuickPick(prompt, command);
-        await option.click();
+    if (quickPickTextGetter) {
+        const quickPickText = command.substring(1);
+        const quickPick = await waitForQuickPick({
+            input: prompt,
+            quickPickText,
+            quickPickGetter: quickPickTextGetter,
+            timeout: quickPickTimeout
+        });
+        await quickPick.select();
     }
     else {
         await prompt.confirm();
@@ -98,19 +148,22 @@ async function getIndexOfQuickPickItem(fulltext: string, array: QuickPickItem[])
     return index;
 }
 
-async function notificationExists(text: string): Promise<Notification | undefined> {
-    const notifications = await new Workbench().getNotifications().catch(() => []);
-    for (const notification of notifications) {
-        const message = await notification.getMessage();
-        if (message.indexOf(text) >= 0) {
-            return notification;
+async function notificationExists(text: string, timeout: number = 6000): Promise<Notification> | never {
+    return VSBrowser.instance.driver.wait(async () => {
+        const notifications = await new Workbench().getNotifications().catch(() => []);
+        for (const notification of notifications) {
+            const message = await notification.getMessage().catch(() => null);
+            if (message?.includes(text) && await notification.isDisplayed()) {
+                return notification;
+            }
         }
-    }
+        return undefined;
+    }, timeout) as Promise<Notification>;
 }
 
 async function removeFolderFromWorkspace(dir: string) {
     await openCommandPrompt();
-    await typeCommandConfirm(">Workspaces: Remove Folder from workspace");
+    await typeCommandConfirm(">Workspaces: Remove Folder from workspace", QuickPickItem.prototype.getLabel);
     const input = await InputBox.create();
     let dirs = await convertArrayObjectsToText(await input.getQuickPicks());
     if (dirs.filter(item => { return item.indexOf(dir) === 0; }).length === 0) {

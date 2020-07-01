@@ -1,7 +1,13 @@
-import { ExtensionsViewSection, ActivityBar, ExtensionsViewItem, InputBox, QuickOpenBox } from 'vscode-extension-tester';
-import { ProjectInitializer } from './common/projectInitializerConstants';
-import { openCommandPrompt } from './common/commonUtils';
+import {
+    ActivityBar,
+    ExtensionsViewItem,
+    ExtensionsViewSection,
+    InputBox,
+    QuickOpenBox
+} from 'vscode-extension-tester';
 import { expect } from 'chai';
+import { openCommandPrompt } from './common/commonUtils';
+import { ProjectInitializer } from './common/projectInitializerConstants';
 
 export function baseExtensionUITest() {
     describe('Verify extension\'s base assets available after install', () => {
@@ -10,7 +16,7 @@ export function baseExtensionUITest() {
 
         it('Command Palette prompt knows project initializer commands', async function () {
             this.timeout(4000);
-            inputBox = await openCommandPrompt();
+            inputBox = await openCommandPrompt(this.timeout() - 500);
             await verifyCommandPalette(inputBox);
         });
 
@@ -34,7 +40,7 @@ export function baseExtensionUITest() {
 }
 
 async function verifyCommandPalette(input: any) {
-    await input.setText(ProjectInitializer.PROJECT_INITIALIZER_NAME);
+    await input.setText(`>${ProjectInitializer.PROJECT_INITIALIZER_NAME}`);
     const options = await input.getQuickPicks();
     expect(options[0].getText()).not.equal('No commands matching');
 }
