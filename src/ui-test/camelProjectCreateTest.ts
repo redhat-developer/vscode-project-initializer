@@ -139,7 +139,14 @@ export function testCreatingCamelProject() {
                     const viewTab = await explorerView.getContent().getSection('Untitled (Workspace)');
                     await driver.wait(async () => {
                         const items = await viewTab.getVisibleItems() as TreeItem[];
-                        return items.find(item => item.getLabel() === 'pom.xml') !== undefined;
+
+                        for (const item of items) {
+                            if (await item.getLabel() === 'pom.xml') {
+                                return true;
+                            }
+                        }
+
+                        return false;
                     }, 8000, 'Could not find pom.xml in file explorer.').catch(expect.fail);
                 });
             });
