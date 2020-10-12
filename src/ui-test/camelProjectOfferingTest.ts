@@ -2,12 +2,12 @@ import { assertEqualOptions } from './common/testUtils';
 import { Catalog } from '../Catalog';
 import {
     convertArrayObjectsToText,
-    convertArrayObjectsToTextAndDescription,
+    convertScrollableQuickPicksToTextAndDescription,
     openCommandPrompt,
     typeCommandConfirm
 } from './common/commonUtils';
 import { expect } from 'chai';
-import { InputBox, QuickOpenBox, QuickPickItem } from 'vscode-extension-tester';
+import { InputBox, QuickPickItem } from 'vscode-extension-tester';
 import { it } from 'mocha';
 import { ProjectInitializer } from './common/projectInitializerConstants';
 
@@ -21,14 +21,14 @@ const CAMEL_MISSIONS_EXPECTED = [
 export function testFuseProjectOffering() {
     describe('Verify Project initializer Camel/Fuse Command palette options', async function () {
 
-        let inputBox: InputBox | QuickOpenBox;
+        let inputBox: InputBox;
         let catalogBuilder = new Catalog(ProjectInitializer.BUILDER_CATALOG_URL);
         let catalog = await catalogBuilder.getCatalog();
         let catalogFuse = filterCatalogForRuntimes(catalog, ProjectInitializer.CAMEL_FUSE_RUNTIME_IDS);
 
         for (let mission of catalogFuse.missions) {
             describe(`Verifying runtimes and versions for '${mission.id}' mission`, async function () {
-                this.timeout(6000);
+                this.timeout(10000);
 
                 before(async function () {
                     inputBox = await openCommandPrompt();
@@ -51,12 +51,11 @@ export function testFuseProjectOffering() {
                 });
 
                 it('Verify mission versions', async function () {
-
                     let expectedRefs = findRefsForMissions(mission.id, catalogFuse.boosters);
                     let expected = expectedRefs.map((runver: any) => runver.runtime + ' ' + runver.version);
                     inputBox = await InputBox.create();
-                    let actual = await convertArrayObjectsToTextAndDescription<QuickPickItem>(await inputBox.getQuickPicks());
-                    expect(expected).to.have.same.members(actual);
+                    let actual = await convertScrollableQuickPicksToTextAndDescription(inputBox);
+                    expect(expected).to.have.members(actual);
                 });
             });
         }

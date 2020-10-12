@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import {
     ActivityBar,
     InputBox,
-    QuickOpenBox,
     QuickPickItem,
     TreeItem,
     VSBrowser,
@@ -35,7 +34,7 @@ export function testCreatingCamelProject() {
     describe('Verify Project initializer Camel/Fuse projects creation', async function () {
 
         let homedir: string;
-        let inputBox: InputBox | QuickOpenBox;
+        let inputBox: InputBox;
         let driver: WebDriver;
 
         before(async function () {
@@ -59,7 +58,11 @@ export function testCreatingCamelProject() {
                 this.timeout(7000);
 
                 before('Open command prompt', async function () {
-                    inputBox = await openCommandPrompt().catch(() => expect.fail('Could not open command palette - timed out'));
+                    try {
+                        inputBox = await openCommandPrompt();
+                    } catch(error) {
+                        expect.fail('Could not open command palette - timed out on error: ' + error.message);
+                    }
                 });
 
                 after(async function () {
@@ -85,7 +88,11 @@ export function testCreatingCamelProject() {
                         quickPickGetter: QuickPickItem.prototype.getLabel,
                         timeout: 5000
                     }).catch(() => expect.fail(`Could not find mission: ${mission}`));
-                    await quickPick.select();
+                    if (quickPick) {
+                        await quickPick.select();
+                    } else {
+                        expect.fail('QuickPick was not found for ' + mission);
+                    }
                 });
 
                 it(`Select runtime version: ${RUNTIME_VERSION}`, async function () {
@@ -97,7 +104,11 @@ export function testCreatingCamelProject() {
                         quickPickGetter: async function (this: QuickPickItem) { return `${await this.getLabel()} ${await this.getDescription()}`; },
                         timeout: 5000
                     }).catch(async (e) => expect.fail(`Could not find runtime version(${RUNTIME_VERSION}) for ${mission}. Error: ${e}`));
-                    await quickPick.select();
+                    if (quickPick) {
+                        await quickPick.select();
+                    } else {
+                        expect.fail('QuickPick was not found for ' + mission);
+                    }
                 });
 
                 it('Select default groupId', async function () {
@@ -129,8 +140,19 @@ export function testCreatingCamelProject() {
                     this.timeout(12000);
                     // check the notification 'Project saved to ;
                     // on Windows seems the C: is translated to c: by VSCode so we can't check this part
-                    const notification = await notificationExists('Project saved to ', 5000).catch((e) => expect.fail(`Could not find notification: ${e}`));
-                    await notification.dismiss().catch((e) => `Could not dismiss notifications. Error: ${e}`);
+                    let notification;
+                    try {
+                        notification = await notificationExists('Project saved to ', 5000);
+                    } catch(error) {
+                        expect.fail(`Could not find notification: ${error}`);
+                    }
+                    try {
+                        if(notification) {
+                            await notification.dismiss();
+                        }
+                    } catch(error) {
+                        expect.fail(`Could not dismiss notifications. Error: ${error}`);
+                    }
                 });
 
                 it('Check if explorer contains created project', async function () {
@@ -139,7 +161,7 @@ export function testCreatingCamelProject() {
                     const viewTab = await explorerView.getContent().getSection('Untitled (Workspace)');
                     await driver.wait(async () => {
                         const items = await viewTab.getVisibleItems() as TreeItem[];
-                        return items.find(item => item.getLabel() === 'pom.xml') !== undefined;
+                        return items.find(async item => await item.getLabel() === 'pom.xml') !== undefined;
                     }, 8000, 'Could not find pom.xml in file explorer.').catch(expect.fail);
                 });
             });

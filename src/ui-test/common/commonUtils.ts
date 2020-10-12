@@ -4,7 +4,6 @@ import {
     InputBox,
     Key,
     Notification,
-    QuickOpenBox,
     QuickPickItem,
     VSBrowser,
     Workbench
@@ -13,7 +12,7 @@ import {
 let path = require('path');
 
 interface QuickPickWaiterArgs {
-    input: InputBox | QuickOpenBox;
+    input: InputBox;
     quickPickText: string;
     quickPickGetter?: () => Promise<string>;
     timeout?: number;
@@ -45,7 +44,7 @@ async function runCommands(...commands: string[]) {
     return commandPrompt;
 }
 
-async function waitForQuickPick(args: QuickPickWaiterArgs): Promise<QuickPickItem> | never {
+async function waitForQuickPick(args: QuickPickWaiterArgs): Promise<QuickPickItem | undefined> {
     args.message = args.message || "Could not find quick pick";
     const quickPick = await VSBrowser.instance.driver.wait(async () => {
         const quickPicks = await args.input.getQuickPicks();
@@ -68,8 +67,8 @@ async function waitForQuickPick(args: QuickPickWaiterArgs): Promise<QuickPickIte
     }
 }
 
-async function verifyQuickPicks(input: InputBox | QuickOpenBox, quickPickValues: string[], quickPickTextGetter = QuickPickItem.prototype.getText as () => Promise<string>, timeout?: number, message?: string): Promise<void> | never {
-    const quickPicks = await Promise.all(quickPickValues.map((option: string) => {
+async function verifyQuickPicks(input: InputBox, quickPickValues: string[], quickPickTextGetter = QuickPickItem.prototype.getText as () => Promise<string>, timeout?: number, message?: string): Promise<void> | never {
+    const quickPicks = await Promise.all(quickPickValues.map(async (option: string) => {
         return waitForQuickPick({
             input,
             timeout,
@@ -77,11 +76,12 @@ async function verifyQuickPicks(input: InputBox | QuickOpenBox, quickPickValues:
             quickPickGetter: quickPickTextGetter,
             message: `Could not find quick pick with value: ${option}`,
         });
-    })).catch(async (e) => expect.fail(
+    })).catch(async (e) => { throw Error(
         `Could not find quick picks { ${quickPickValues.join(', ')} }
          in { ${(await Promise.all((await input.getQuickPicks()).map(async (q) => await q.getText()))).join(', ')} }.
         Error: ${e}`
-    ));
+        );}
+    );
     expect(quickPicks.length,
         `Quick pick menu does not have ${quickPickValues.length} entires. Actual number of entries: ${quickPicks.length}`)
         .to.be.equal(quickPickValues.length);
@@ -102,7 +102,11 @@ async function typeCommandConfirm(command: string, quickPickTextGetter?: () => P
             quickPickGetter: quickPickTextGetter,
             timeout: quickPickTimeout
         });
-        await quickPick.select();
+        if (quickPick) {
+            await quickPick.select();
+        } else {
+            throw Error('QuickPick item does not exist for command' + command);
+        }
     }
     else {
         await prompt.confirm();
@@ -148,7 +152,43 @@ async function getIndexOfQuickPickItem(fulltext: string, array: QuickPickItem[])
     return index;
 }
 
-async function notificationExists(text: string, timeout: number = 6000): Promise<Notification> | never {
+async function convertScrollableQuickPicksToTextAndDescription(input: InputBox) {
+    let options = new Set();
+    const quickPicks = await input.getQuickPicks();
+    quickPicks.map(async pick => {
+        options.add(await pick.getLabel() + " " + await pick.getDescription());
+    });
+    let actualLength = quickPicks.length;
+    while(true) {
+        const quickPick = await input.findQuickPick(actualLength);
+        if (quickPick) {
+            options.add(await quickPick.getLabel() + " " + await quickPick.getDescription());
+            actualLength++;
+        } else {
+           break;
+        }
+    }
+    return Array.from(options);
+}
+
+async function getAllQuickPickItems(input: InputBox): Promise<QuickPickItem[]> {
+    let resultArray = new Set<QuickPickItem>();
+    const quickPicks = await input.getQuickPicks();
+    quickPicks.map(pick => resultArray.add(pick));
+    let actualLength = quickPicks.length;
+    while(true) {
+        const quickPick = await input.findQuickPick(actualLength);
+        if (quickPick) {
+            resultArray.add(quickPick);
+            actualLength++;
+        } else {
+           break;
+        }
+    }
+    return Array.from(resultArray);
+}
+
+async function notificationExists(text: string, timeout: number = 6000): Promise<Notification> {
     return VSBrowser.instance.driver.wait(async () => {
         const notifications = await new Workbench().getNotifications().catch(() => []);
         for (const notification of notifications) {
@@ -208,5 +248,7 @@ export {
     getIndexOfQuickPickItem,
     addFolderToWorkspace,
     removeFolderFromWorkspace,
-    removeFilePathRecursively
+    removeFilePathRecursively,
+    getAllQuickPickItems,
+    convertScrollableQuickPicksToTextAndDescription
 };
