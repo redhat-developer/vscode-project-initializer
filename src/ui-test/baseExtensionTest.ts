@@ -2,8 +2,7 @@ import {
     ActivityBar,
     ExtensionsViewItem,
     ExtensionsViewSection,
-    InputBox,
-    QuickOpenBox
+    InputBox
 } from 'vscode-extension-tester';
 import { expect } from 'chai';
 import { openCommandPrompt } from './common/commonUtils';
@@ -12,7 +11,7 @@ import { ProjectInitializer } from './common/projectInitializerConstants';
 export function baseExtensionUITest() {
     describe('Verify extension\'s base assets available after install', () => {
 
-        let inputBox: InputBox | QuickOpenBox;
+        let inputBox: InputBox;
 
         it('Command Palette prompt knows project initializer commands', async function () {
             this.timeout(4000);
@@ -23,7 +22,7 @@ export function baseExtensionUITest() {
         it('Project initializer extension is installed', async function () {
             this.timeout(5000);
             const view = await new ActivityBar().getViewControl('Extensions').openView();
-            const section = await view.getContent().getSection('Enabled') as ExtensionsViewSection;
+            const section = await view.getContent().getSection('Installed') as ExtensionsViewSection;
             let item = await section.findItem(`@installed ${ProjectInitializer.PROJECT_INITIALIZER_FULL_NAME}`) as ExtensionsViewItem;
             expect(item).not.undefined;
         });

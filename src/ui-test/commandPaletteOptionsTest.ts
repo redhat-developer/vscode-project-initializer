@@ -1,4 +1,4 @@
-import { InputBox, QuickOpenBox, QuickPickItem } from 'vscode-extension-tester';
+import { InputBox, QuickPickItem } from 'vscode-extension-tester';
 import { openCommandPrompt, typeCommandConfirm, verifyQuickPicks } from './common/commonUtils';
 import { ProjectInitializer } from './common/projectInitializerConstants';
 
@@ -14,7 +14,7 @@ const GENERAL_PROJECT_EXPECTED = [
 export function testCommandPaletteOffering() {
     describe('Verify Project initializer Command palette options', () => {
 
-        let inputBox: InputBox | QuickOpenBox;
+        let inputBox: InputBox;
 
         it('Command palette should show proper options on the first level', async function () {
             this.timeout(8000);
