@@ -2,15 +2,15 @@
     "name": "project-initializer",
     "displayName": "Project Initializer by Red Hat",
     "description": "A lightweight extension based on Red Hat launcher to generate quickstart projects using VSCode",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "license": "EPL-2.0",
     "publisher": "redhat",
     "author": "Red Hat",
     "icon": "icons/Project_Initializer.png",
-    "homepage": "https://github.com/fabric8-launcher/launcher-vscode-extension/blob/master/README.md",
+    "homepage": "https://github.com/redhat-developer/vscode-project-initializer/blob/master/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/fabric8-launcher/launcher-vscode-extension"
+        "url": "https://github.com/redhat-developer/vscode-project-initializer"
     },
     "engines": {
         "vscode": "^1.34.0"
