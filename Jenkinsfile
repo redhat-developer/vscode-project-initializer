@@ -3,7 +3,7 @@
 node('rhel7'){
     stage('Checkout repo') {
         deleteDir()
-        git url: 'https://github.com/redhat-developer/vscode-project-initializer'
+        git url: 'https://github.com/redhat-developer/vscode-project-initializer.git'
     }
 
     stage('Install requirements') {
