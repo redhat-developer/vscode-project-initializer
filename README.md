@@ -72,3 +72,7 @@ Switch to Project Initializer
 
 Specific commands are available to create project by choosing runtime first
 
+## Data and telemetry
+
+The Project Initializer by Red Hat for Visual Studio Code collects anonymous [usage data](USAGE_DATA.md) and sends it to Red Hat servers to help improve our products and services. Read our [privacy statement](https://developers.redhat.com/article/tool-data-collection) to learn more. This extension respects the `redhat.elemetry.enabled` setting which you can learn more about at https://github.com/redhat-developer/vscode-commons#how-to-disable-telemetry-reporting
+

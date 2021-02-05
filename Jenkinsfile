@@ -28,6 +28,8 @@ node('rhel7'){
 
     stage('Package') {
         def packageJson = readJSON file: 'package.json'
+        packageJson.extensionDependencies = ["redhat.vscode-commons"]
+        writeJSON file: 'package.json', json: packageJson, pretty: 4
         sh "vsce package -o project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.vsix"
         sh "npm pack && mv project-initializer-${packageJson.version}.tgz project-initializer-${packageJson.version}-${env.BUILD_NUMBER}.tgz"
     }
