@@ -97,6 +97,9 @@
             }
         }
     },
+    "extensionDependencies": [
+        "redhat.vscode-commons"
+    ],
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
@@ -125,6 +128,7 @@
         "@types/yauzl": "^2.9.0",
         "request": "^2.47.0",
         "request-promise-native": "^1.0.7",
-        "yauzl": "^2.10.0"
+        "yauzl": "^2.10.0",
+        "@redhat-developer/vscode-redhat-telemetry": "0.0.11"
     }
 }
