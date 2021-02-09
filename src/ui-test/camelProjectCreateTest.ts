@@ -148,6 +148,7 @@ export function testCreatingCamelProject() {
                     }
                     try {
                         if(notification) {
+                            await notification.wait();
                             await notification.dismiss();
                         }
                     } catch(error) {
