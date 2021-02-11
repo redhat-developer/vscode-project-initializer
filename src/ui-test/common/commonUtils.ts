@@ -4,6 +4,7 @@ import {
     InputBox,
     Key,
     Notification,
+    NotificationType,
     QuickPickItem,
     VSBrowser,
     Workbench
@@ -190,7 +191,8 @@ async function getAllQuickPickItems(input: InputBox): Promise<QuickPickItem[]> {
 
 async function notificationExists(text: string, timeout: number = 6000): Promise<Notification> {
     return VSBrowser.instance.driver.wait(async () => {
-        const notifications = await new Workbench().getNotifications().catch(() => []);
+        const center = await new Workbench().openNotificationsCenter();
+        const notifications = await center.getNotifications(NotificationType.Any).catch(() => []);
         for (const notification of notifications) {
             const message = await notification.getMessage().catch(() => null);
             if (message?.includes(text) && await notification.isDisplayed()) {

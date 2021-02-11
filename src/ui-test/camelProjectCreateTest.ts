@@ -31,7 +31,7 @@ const RUNTIME_VERSION = 'fuse redhat750';
  */
 export function testCreatingCamelProject() {
 
-    describe('Verify Project initializer Camel/Fuse projects creation', async function () {
+    describe('Verify Project initializer Camel-Fuse projects creation', async function () {
 
         let homedir: string;
         let inputBox: InputBox;
@@ -54,7 +54,7 @@ export function testCreatingCamelProject() {
         });
 
         for (const mission of CAMEL_MISSIONS_EXPECTED) {
-            describe('Test creating Camel/Fuse project: ' + mission + ', runtime & version: ' + RUNTIME_VERSION, async function () {
+            describe('Test creating Camel-Fuse project ' + mission + ' runtime and version ' + RUNTIME_VERSION, async function () {
                 this.timeout(7000);
 
                 before('Open command prompt', async function () {
@@ -79,7 +79,7 @@ export function testCreatingCamelProject() {
                     await typeCommandConfirm(`>${ProjectInitializer.PI_GENERAL.camel}`, QuickPickItem.prototype.getLabel);
                 });
 
-                it(`Select mission: ${mission}`, async function () {
+                it(`Select mission ${mission}`, async function () {
                     inputBox = await InputBox.create();
                     expect(await inputBox.getPlaceHolder()).to.be.equal('Choose mission');
                     const quickPick = await waitForQuickPick({
@@ -95,7 +95,7 @@ export function testCreatingCamelProject() {
                     }
                 });
 
-                it(`Select runtime version: ${RUNTIME_VERSION}`, async function () {
+                it(`Select runtime version ${RUNTIME_VERSION}`, async function () {
                     inputBox = await InputBox.create();
                     expect(await inputBox.getPlaceHolder()).to.be.equal('Choose runtime');
                     const quickPick = await waitForQuickPick({
@@ -148,6 +148,7 @@ export function testCreatingCamelProject() {
                     }
                     try {
                         if(notification) {
+                            await notification.wait();
                             await notification.dismiss();
                         }
                     } catch(error) {
