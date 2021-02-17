@@ -134,6 +134,7 @@ export function testCreatingCamelProject() {
                     inputBox = await InputBox.create();
                     expect(await inputBox.getPlaceHolder()).to.be.equal('Select the target workspace folder');
                     await inputBox.selectQuickPick(DIR);
+                    await driver.wait(async () => !(await inputBox.isDisplayed()), 3000);
                 });
 
                 it('Check notification', async function () {
@@ -148,7 +149,8 @@ export function testCreatingCamelProject() {
                     }
                     try {
                         if(notification) {
-                            await notification.wait();
+                            await driver.actions().mouseMove(notification).perform();
+                            await new Promise( resolve => setTimeout(resolve, 1000) );
                             await notification.dismiss();
                         }
                     } catch(error) {
