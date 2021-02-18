@@ -15,6 +15,9 @@
     "engines": {
         "vscode": "^1.52.0"
     },
+    "extensionDependencies": [
+        "redhat.vscode-commons"
+    ],
     "categories": [
         "Other"
     ],
@@ -102,7 +105,7 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "test": "npm run compile && node ./out/test/runTest.js",
-        "ui-test": "npm run compile && extest setup-and-run out/ui-test/allTestsSuite.js"
+        "ui-test": "npm run compile && extest setup-and-run -i out/ui-test/allTestsSuite.js"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
@@ -125,6 +128,9 @@
         "@types/yauzl": "^2.9.0",
         "request": "^2.47.0",
         "request-promise-native": "^1.0.7",
-        "yauzl": "^2.10.0"
+        "yauzl": "^2.10.0",
+        "@redhat-developer/vscode-redhat-telemetry": "0.0.13",
+        "ip-regex": "4.3.0",
+        "email-regex": "4.0.0"
     }
 }
