@@ -36,41 +36,50 @@ None at this point.
 
 ## Release Notes
 
-### 0.0.1
+### 0.1.0
 
-First version for early feedback
+Add opt-in telemetry
 
-### 0.0.2
+### 0.0.10
 
-First missing dependency
+Restore permissions on files while unzipping
 
-### 0.0.3
+### 0.0.9
 
-Update for new Launcher API
-
-### 0.0.4
-
-Endpoint URL, default groupID, artifactId and version settings
-
-### 0.0.5
-
-Fix typo in default endpoint URL causing catalog loading error
-
-### 0.0.6
-
-Files are now extracted at the root of the workspace folder
-
-### 0.0.7
-
-Add VSCode recommendation files to generated projects
+Specific commands are available to create project by choosing runtime first
 
 ### 0.0.8
 
 Switch to Project Initializer
 
-### 0.0.9
+### 0.0.7
 
-Specific commands are available to create project by choosing runtime first
+Add VSCode recommendation files to generated projects
+
+### 0.0.6
+
+Files are now extracted at the root of the workspace folder
+
+### 0.0.5
+
+Fix typo in default endpoint URL causing catalog loading error
+
+### 0.0.4
+
+Endpoint URL, default groupID, artifactId and version settings
+
+### 0.0.3
+
+Update for new Launcher API
+
+### 0.0.2
+
+First missing dependency
+
+### 0.0.1
+
+First version for early feedback
+
 
 ## Data and telemetry
 
