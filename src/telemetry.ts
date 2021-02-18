@@ -9,6 +9,9 @@
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 import { getTelemetryService, TelemetryEvent, TelemetryService } from '@redhat-developer/vscode-redhat-telemetry';
+import * as os from 'os';
+import ipRegex = require('ip-regex');
+import emailRegex = require('email-regex');
 
 const telemetryService: Promise<TelemetryService> = getTelemetryService("redhat.project-initializer");
 
@@ -30,4 +33,13 @@ export default async function sendTelemetry(actionName: string, properties?: any
         return service?.sendStartupEvent();
     }
     return service?.send(createTrackingEvent(actionName, properties));
+}
+
+export function sanitize(message: string) : string {
+    message = message.replace(os.homedir(), "$HOME");
+    message = message.replace(os.tmpdir(), "$TMPDIR")
+    message = message.replace(os.userInfo().username, "$USER")
+    message = message.replace(ipRegex(), "$IPADDRESS")
+    message = message.replace(emailRegex(), "$EMAIL")
+    return message;
 }

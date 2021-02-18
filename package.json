@@ -15,7 +15,9 @@
     "engines": {
         "vscode": "^1.52.0"
     },
-    "extensionDependencies": ["redhat.vscode-commons"],
+    "extensionDependencies": [
+        "redhat.vscode-commons"
+    ],
     "categories": [
         "Other"
     ],
@@ -127,6 +129,8 @@
         "request": "^2.47.0",
         "request-promise-native": "^1.0.7",
         "yauzl": "^2.10.0",
-        "@redhat-developer/vscode-redhat-telemetry": "0.0.13"
+        "@redhat-developer/vscode-redhat-telemetry": "0.0.13",
+        "ip-regex": "4.3.0",
+        "email-regex": "4.0.0"
     }
 }

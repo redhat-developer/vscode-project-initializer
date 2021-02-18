@@ -6,7 +6,7 @@ import { Catalog } from './Catalog';
 import * as yauzl from 'yauzl';
 let fs = require('fs');
 let p = require('path');
-import sendTelemetry from './telemetry';
+import { sendTelemetry, sanitize } from './telemetry';
 
 let catalogBuilder:Catalog = new Catalog(vscode.workspace.getConfiguration("project.initializer").get<string>("endpointUrl", "https://forge.api.openshift.io/api/"));
 export const CAMEL_FUSE_RUNTIME_IDS = ['camel', 'fuse'];
@@ -127,7 +127,7 @@ async function generate(commandId: string, catalog: any) {
             }
         }
     } catch (error) {
-        telemetryProps.error = error.toString();
+        telemetryProps.error = sanitize(error.toString());
     } finally {
         telemetryProps.duration = Date.now() - startTime;
         sendTelemetry('command', telemetryProps);
