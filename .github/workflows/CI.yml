@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
         node: [12]
       fail-fast: false
 
@@ -29,10 +29,19 @@ jobs:
     - name: Install xvfb
       run: |        
         sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0
+      if: ${{ runner.os == 'Linux'}}
     - name: Run Unit tests
       run: xvfb-run --auto-servernum -s '-screen 0 1280x1024x24' npm test --silent
+      if: ${{ runner.os == 'Linux'}}
+    - name: Run Unit tests
+      run: npm test --silent
+      if: ${{ runner.os != 'Linux'}}
     - name: Run UI tests
       run: xvfb-run --auto-servernum -s '-screen 0 1280x1024x24' npm run ui-test
+      if: ${{ runner.os == 'Linux'}}
+    - name: Run UI tests
+      run: npm run ui-test
+      if: ${{ runner.os != 'Linux'}}
     - name: Archiving test artifacts
       uses: actions/upload-artifact@v2
       with: 
