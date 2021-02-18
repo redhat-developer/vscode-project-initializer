@@ -27,7 +27,7 @@ export function createTrackingEvent(name: string, properties: any = {}): Telemet
     }
 }
 
-export default async function sendTelemetry(actionName: string, properties?: any): Promise<void> {
+export async function sendTelemetry(actionName: string, properties?: any): Promise<void> {
     const service = await getTelemetryServiceInstance();
     if (actionName === 'activation') {
         return service?.sendStartupEvent();
