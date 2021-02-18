@@ -45,7 +45,7 @@ jobs:
     - name: Archiving test artifacts
       uses: actions/upload-artifact@v2
       with: 
-        name: test-artifacts
+        name: test-artifacts-${{ runner.os }}
         path: |
           test-resources/screenshots/*.png
           test-resources/*.log
