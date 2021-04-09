@@ -21,8 +21,8 @@ export function baseExtensionUITest() {
 
         it('Project initializer extension is installed', async function () {
             this.timeout(5000);
-            const view = await new ActivityBar().getViewControl('Extensions').openView();
-            const section = await view.getContent().getSection('Installed') as ExtensionsViewSection;
+            const view = await (await new ActivityBar().getViewControl('Extensions'))?.openView();
+            const section = await view?.getContent().getSection('Installed') as ExtensionsViewSection;
             let item = await section.findItem(`@installed ${ProjectInitializer.PROJECT_INITIALIZER_FULL_NAME}`) as ExtensionsViewItem;
             expect(item).not.undefined;
         });
@@ -31,7 +31,7 @@ export function baseExtensionUITest() {
             if (inputBox && await inputBox.isDisplayed()) {
                 await inputBox.cancel();
             }
-            await new ActivityBar().getViewControl('Extensions').closeView();
+            await (await new ActivityBar().getViewControl('Extensions'))?.closeView();
         });
 
     });

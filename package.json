@@ -108,29 +108,29 @@
         "ui-test": "npm run compile && extest setup-and-run -i out/ui-test/allTestsSuite.js"
     },
     "devDependencies": {
-        "@types/glob": "^7.1.1",
-        "@types/node": "^7.0.43",
         "@types/chai": "^4.2.0",
+        "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.5",
-        "@types/vscode": "1.19.0",
+        "@types/node": "^7.0.43",
         "@types/request-promise-native": "^1.0.15",
+        "@types/vscode": "1.19.0",
         "chai": "^4.2.0",
+        "glob": "^7.1.6",
         "mocha": "^6.1.4",
         "mocha-jenkins-reporter": "^0.4.1",
-        "glob": "^7.1.6",
         "tslint": "^5.17.0",
         "typescript": "^3.5.2",
-        "vscode-test": "^1.2.3",
-        "vscode-extension-tester": "^3.2.6"
+        "vscode-extension-tester": "^4.0.2",
+        "vscode-test": "^1.2.3"
     },
     "dependencies": {
+        "@redhat-developer/vscode-redhat-telemetry": "0.0.13",
         "@types/request": "^2.47.0",
         "@types/yauzl": "^2.9.0",
+        "email-regex": "4.0.0",
+        "ip-regex": "4.3.0",
         "request": "^2.47.0",
         "request-promise-native": "^1.0.7",
-        "yauzl": "^2.10.0",
-        "@redhat-developer/vscode-redhat-telemetry": "0.0.13",
-        "ip-regex": "4.3.0",
-        "email-regex": "4.0.0"
+        "yauzl": "^2.10.0"
     }
 }
