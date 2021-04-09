@@ -72,7 +72,7 @@ export function testCreatingCamelProject() {
                     }
                     // delete created project - files from the folder
                     removeFilePathRecursively(homedir);
-                    await new ActivityBar().getViewControl('Explorer').closeView();
+                    await (await new ActivityBar().getViewControl('Explorer'))?.closeView();
                 });
 
                 it('Select camel project', async function () {
@@ -160,10 +160,10 @@ export function testCreatingCamelProject() {
 
                 it('Check if explorer contains created project', async function () {
                     // check explorer that it contains created project
-                    const explorerView = await new ActivityBar().getViewControl('Explorer').openView();
-                    const viewTab = await explorerView.getContent().getSection('Untitled (Workspace)');
+                    const explorerView = await (await new ActivityBar().getViewControl('Explorer'))?.openView();
+                    const viewTab = await explorerView?.getContent().getSection('Untitled (Workspace)');
                     await driver.wait(async () => {
-                        const items = await viewTab.getVisibleItems() as TreeItem[];
+                        const items = await viewTab?.getVisibleItems() as TreeItem[];
                         return items.find(async item => await item.getLabel() === 'pom.xml') !== undefined;
                     }, 8000, 'Could not find pom.xml in file explorer.').catch(expect.fail);
                 });
