@@ -105,7 +105,7 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "test": "npm run compile && node ./out/test/runTest.js",
-        "ui-test": "npm run compile && extest setup-and-run -i out/ui-test/allTestsSuite.js"
+        "ui-test": "npm run compile && extest setup-and-run -i out/ui-test/allTestsSuite.js -o src/ui-test/custom-settings.json -c 1.55.0"
     },
     "devDependencies": {
         "@types/chai": "^4.2.0",
@@ -120,7 +120,7 @@
         "mocha-jenkins-reporter": "^0.4.1",
         "tslint": "^5.17.0",
         "typescript": "^3.5.2",
-        "vscode-extension-tester": "^4.0.2",
+        "vscode-extension-tester": "^4.0.3",
         "vscode-test": "^1.2.3"
     },
     "dependencies": {
