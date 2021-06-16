@@ -2,7 +2,7 @@
     "name": "project-initializer",
     "displayName": "Project Initializer by Red Hat",
     "description": "A lightweight extension based on Red Hat launcher to generate quickstart projects using VSCode",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "license": "EPL-2.0",
     "publisher": "redhat",
     "author": "Red Hat",
@@ -15,9 +15,6 @@
     "engines": {
         "vscode": "^1.52.0"
     },
-    "extensionDependencies": [
-        "redhat.vscode-commons"
-    ],
     "categories": [
         "Other"
     ],
@@ -96,6 +93,12 @@
                     "type": "string",
                     "scope": "window",
                     "description": "Default value for Version."
+                },
+                "redhat.telemetry.enabled": {
+                    "type": "boolean",
+                    "default": null,
+                    "markdownDescription": "Enable usage data and errors to be sent to Red Hat servers. Read our [privacy statement](https://developers.redhat.com/article/tool-data-collection).",
+                    "scope": "window"
                 }
             }
         }
@@ -120,11 +123,11 @@
         "mocha-jenkins-reporter": "^0.4.1",
         "tslint": "^5.17.0",
         "typescript": "^3.5.2",
-        "vscode-extension-tester": "^4.0.2",
+        "vscode-extension-tester": "^4.1.0",
         "vscode-test": "^1.2.3"
     },
     "dependencies": {
-        "@redhat-developer/vscode-redhat-telemetry": "0.0.13",
+        "@redhat-developer/vscode-redhat-telemetry": "0.1.1",
         "@types/request": "^2.47.0",
         "@types/yauzl": "^2.9.0",
         "email-regex": "4.0.0",
