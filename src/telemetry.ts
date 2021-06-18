@@ -8,16 +8,13 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-import { getTelemetryService, TelemetryEvent, TelemetryService } from '@redhat-developer/vscode-redhat-telemetry';
+import { getRedHatService, TelemetryEvent, TelemetryService } from '@redhat-developer/vscode-redhat-telemetry';
+import { ExtensionContext } from 'vscode';
 import * as os from 'os';
 import ipRegex = require('ip-regex');
 import emailRegex = require('email-regex');
 
-const telemetryService: Promise<TelemetryService> = getTelemetryService("redhat.project-initializer");
-
-export async function getTelemetryServiceInstance(): Promise<TelemetryService> {
-    return telemetryService;
-}
+let telemetryService: TelemetryService;
 
 export function createTrackingEvent(name: string, properties: any = {}): TelemetryEvent {
     return {
@@ -27,12 +24,19 @@ export function createTrackingEvent(name: string, properties: any = {}): Telemet
     }
 }
 
-export async function sendTelemetry(actionName: string, properties?: any): Promise<void> {
-    const service = await getTelemetryServiceInstance();
-    if (actionName === 'activation') {
-        return service?.sendStartupEvent();
+export async function startTelemetry(context: ExtensionContext): Promise<void> {
+    try {
+        const redHatService = await getRedHatService(context);
+        telemetryService = await redHatService.getTelemetryService();
+    } catch(error) {
+        // eslint-disable-next-line no-console
+        console.log(`${error}`);
     }
-    return service?.send(createTrackingEvent(actionName, properties));
+    return telemetryService?.sendStartupEvent();
+}
+
+export async function sendTelemetry(actionName: string, properties?: any): Promise<void> {
+    return telemetryService?.send(createTrackingEvent(actionName, properties));
 }
 
 export function sanitize(message: string) : string {
