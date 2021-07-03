@@ -6,7 +6,7 @@ import { Catalog } from './Catalog';
 import * as yauzl from 'yauzl';
 let fs = require('fs');
 let p = require('path');
-import { sendTelemetry, sanitize } from './telemetry';
+import { startTelemetry, sendTelemetry, sanitize } from './telemetry';
 
 let catalogBuilder:Catalog = new Catalog(vscode.workspace.getConfiguration("project.initializer").get<string>("endpointUrl", "https://forge.api.openshift.io/api/"));
 export const CAMEL_FUSE_RUNTIME_IDS = ['camel', 'fuse'];
@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(springBootGenerationCommand);
     context.subscriptions.push(disposableListener);
 
-    sendTelemetry('activation');
+    startTelemetry(context);
 }
 
 function updateCatalog(event: vscode.ConfigurationChangeEvent) {
