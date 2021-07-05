@@ -2,7 +2,7 @@
     "name": "project-initializer",
     "displayName": "Project Initializer by Red Hat",
     "description": "A lightweight extension based on Red Hat launcher to generate quickstart projects using VSCode",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "license": "EPL-2.0",
     "publisher": "redhat",
     "author": "Red Hat",
@@ -127,7 +127,7 @@
         "vscode-test": "^1.2.3"
     },
     "dependencies": {
-        "@redhat-developer/vscode-redhat-telemetry": "0.1.1",
+        "@redhat-developer/vscode-redhat-telemetry": "0.2.0",
         "@types/request": "^2.47.0",
         "@types/yauzl": "^2.9.0",
         "email-regex": "4.0.0",

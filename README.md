@@ -36,6 +36,14 @@ None at this point.
 
 ## Release Notes
 
+### 0.2.1
+
+Bug fixes in telemetry library
+
+### 0.2.0
+
+Removed vscode-commons dependency
+
 ### 0.1.0
 
 Add opt-in telemetry
