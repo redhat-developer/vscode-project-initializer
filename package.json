@@ -123,8 +123,8 @@
         "mocha-jenkins-reporter": "^0.4.1",
         "tslint": "^5.17.0",
         "typescript": "^3.5.2",
-        "vscode-extension-tester": "^4.1.0",
-        "vscode-test": "^1.2.3"
+        "vscode-extension-tester": "^4.2.4",
+        "vscode-test": "^1.6.1"
     },
     "dependencies": {
         "@redhat-developer/vscode-redhat-telemetry": "0.2.0",
