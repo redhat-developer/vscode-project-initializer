@@ -60,7 +60,7 @@ export function testCreatingCamelProject() {
                 before('Open command prompt', async function () {
                     try {
                         inputBox = await openCommandPrompt();
-                    } catch(error) {
+                    } catch(error: any) {
                         expect.fail('Could not open command palette - timed out on error: ' + error.message);
                     }
                 });

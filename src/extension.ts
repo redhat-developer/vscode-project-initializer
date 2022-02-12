@@ -126,7 +126,7 @@ async function generate(commandId: string, catalog: any) {
                 }
             }
         }
-    } catch (error) {
+    } catch (error: any) {
         telemetryProps.error = sanitize(error.toString());
     } finally {
         telemetryProps.duration = Date.now() - startTime;
