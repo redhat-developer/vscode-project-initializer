@@ -133,7 +133,7 @@
         "email-regex": "4.0.0",
         "ip-regex": "4.3.0",
         "request": "^2.47.0",
-        "request-promise-native": "^1.0.7",
+        "request-promise-native": "^1.0.9",
         "yauzl": "^2.10.0"
     }
 }
