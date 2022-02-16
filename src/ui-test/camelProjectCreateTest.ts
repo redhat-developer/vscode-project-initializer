@@ -102,7 +102,7 @@ export function testCreatingCamelProject() {
                         input: inputBox,
                         quickPickText: RUNTIME_VERSION,
                         quickPickGetter: async function (this: QuickPickItem) { return `${await this.getLabel()} ${await this.getDescription()}`; },
-                        timeout: 5000
+                        timeout: 10000
                     }).catch(async (e) => expect.fail(`Could not find runtime version(${RUNTIME_VERSION}) for ${mission}. Error: ${e}`));
                     if (quickPick) {
                         await quickPick.select();
