@@ -16,7 +16,6 @@ import {
     waitForQuickPick
 } from './common/commonUtils';
 import { ProjectInitializer } from './common/projectInitializerConstants';
-let os = require('os');
 let path = require('path');
 
 const CAMEL_MISSIONS_EXPECTED = [
@@ -24,7 +23,10 @@ const CAMEL_MISSIONS_EXPECTED = [
 ];
 
 const DIR = 'Fuse_Camel_TestFolder';
-const RUNTIME_VERSION = 'fuse redhat750';
+const RUNTIME_VERSION = 'fuse redhat760';
+
+// temp directory for testing
+export const WORKSPACE_PATH = path.join(path.resolve(__dirname, '..', '..'), '.ui-testing');
 
 /**
  * @author Ondrej Dockal <odockal@redhat.com>
@@ -37,25 +39,34 @@ export function testCreatingCamelProject() {
         let inputBox: InputBox;
         let driver: WebDriver;
 
-        before(async function () {
-            this.timeout(10000);
-            homedir = os.homedir() + path.sep + DIR;
+        this.beforeAll('Workspace setup', async function () {
+            this.timeout(60000);
             driver = VSBrowser.instance.driver;
+
+            if (!fs.existsSync(WORKSPACE_PATH)) {
+                fs.mkdirSync(WORKSPACE_PATH);
+            }
+
+            homedir = WORKSPACE_PATH + path.sep + DIR;
             if (!fs.existsSync(homedir)) {
                 fs.mkdirSync(homedir);
             }
+
+            // Open Workspace
             await openCommandPrompt();
             const quick = await InputBox.create();
-            await quick.setText('>Extest: Add Folder');
+            await quick.setText('>File: Open Folder...');
             await quick.confirm();
             let confirmedPrompt = await InputBox.create();
             await confirmedPrompt.setText(homedir);
             await confirmedPrompt.confirm();
+
+            await new Promise( resolve => setTimeout(resolve, 5000) );
         });
 
         for (const mission of CAMEL_MISSIONS_EXPECTED) {
             describe('Test creating Camel-Fuse project ' + mission + ' runtime and version ' + RUNTIME_VERSION, async function () {
-                this.timeout(7000);
+                this.timeout(60000);
 
                 before('Open command prompt', async function () {
                     try {
@@ -72,7 +83,6 @@ export function testCreatingCamelProject() {
                     }
                     // delete created project - files from the folder
                     removeFilePathRecursively(homedir);
-                    await (await new ActivityBar().getViewControl('Explorer'))?.closeView();
                 });
 
                 it('Select camel project', async function () {
@@ -102,7 +112,7 @@ export function testCreatingCamelProject() {
                         input: inputBox,
                         quickPickText: RUNTIME_VERSION,
                         quickPickGetter: async function (this: QuickPickItem) { return `${await this.getLabel()} ${await this.getDescription()}`; },
-                        timeout: 5000
+                        timeout: 10000
                     }).catch(async (e) => expect.fail(`Could not find runtime version(${RUNTIME_VERSION}) for ${mission}. Error: ${e}`));
                     if (quickPick) {
                         await quickPick.select();
@@ -129,11 +139,10 @@ export function testCreatingCamelProject() {
                     await inputBox.confirm();
                 });
 
-
                 it('Select home directory', async function () {
                     inputBox = await InputBox.create();
                     expect(await inputBox.getPlaceHolder()).to.be.equal('Select the target workspace folder');
-                    await inputBox.selectQuickPick(DIR);
+                    await inputBox.confirm();
                     await driver.wait(async () => !(await inputBox.isDisplayed()), 3000);
                 });
 
@@ -161,7 +170,7 @@ export function testCreatingCamelProject() {
                 it('Check if explorer contains created project', async function () {
                     // check explorer that it contains created project
                     const explorerView = await (await new ActivityBar().getViewControl('Explorer'))?.openView();
-                    const viewTab = await explorerView?.getContent().getSection('Untitled (Workspace)');
+                    const viewTab = await explorerView?.getContent().getSection(DIR);
                     await driver.wait(async () => {
                         const items = await viewTab?.getVisibleItems() as TreeItem[];
                         return items.find(async item => await item.getLabel() === 'pom.xml') !== undefined;

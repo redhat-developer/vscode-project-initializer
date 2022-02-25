@@ -8,7 +8,7 @@ export function run(): Promise<void> {
 		ui: 'tdd',
 		reporter: 'mocha-jenkins-reporter'
 	});
-	mocha.useColors(true);
+	mocha.options.useColors = true;
 
 	const testsRoot = path.resolve(__dirname, '.');
 
