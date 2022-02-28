@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.com/redhat-developer/vscode-project-initializer.svg?branch=master)](https://travis-ci.com/redhat-developer/vscode-project-initializer)
 [![Build status](https://ci.appveyor.com/api/projects/status/bndhekqk8lnj0s99?svg=true)](https://ci.appveyor.com/project/redhat-developer/vscode-project-initializer)
 
+This extension is now deprecated. The underlying service used by the extension (Red Hat Launcher) is planned to be sunset in 2022. You can find similar feature on https://code.quarkus.io or with the [Red Hat OpenShift Connector extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-openshift-connector)
+
 ## Overview
 
 A lightweight extension based on Red Hat Launcher to generate quickstart projects using Visual Studio Code (VS Code). Here's a list of features:
@@ -35,6 +37,10 @@ Then, you can trigger the Project Initializer. It is available from Palette comm
 None at this point.
 
 ## Release Notes
+
+### 0.2.2
+
+Extension deprecation
 
 ### 0.2.1
 

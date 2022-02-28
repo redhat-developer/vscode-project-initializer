@@ -1,7 +1,7 @@
 {
     "name": "project-initializer",
-    "displayName": "Project Initializer by Red Hat",
-    "description": "A lightweight extension based on Red Hat launcher to generate quickstart projects using VSCode",
+    "displayName": "Deprecated - Project Initializer by Red Hat",
+    "description": "Deprecated - A lightweight extension based on Red Hat launcher to generate quickstart projects using VSCode",
     "version": "0.2.2",
     "license": "EPL-2.0",
     "publisher": "redhat",
