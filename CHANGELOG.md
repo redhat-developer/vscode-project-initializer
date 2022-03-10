@@ -34,3 +34,28 @@ Switch to Project Initializer
 ### 0.0.9
 
 - Specific commands are available to create project by choosing runtime first
+
+### 0.0.10
+
+- Fix permissions on Linux and MacOS
+
+### 0.0.11
+
+- Publish on open-vsx.org
+
+### 0.1.0
+
+- Add telemetry
+
+### 0.2.0
+
+- Remove dependency to vscode-commons
+
+### 0.2.1
+
+- Fix Telemetry API
+
+### 0.2.2
+
+- Deprecate extension
+
