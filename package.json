@@ -108,7 +108,7 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "test": "npm run compile && node ./out/test/runTest.js",
-        "ui-test": "npm run compile && extest setup-and-run -i out/ui-test/allTestsSuite.js"
+        "ui-test": "npm run compile && extest setup-and-run -i out/ui-test/allTestsSuite.js -c 1.69.2"
     },
     "devDependencies": {
         "@types/chai": "^4.2.0",

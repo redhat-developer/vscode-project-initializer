@@ -37,7 +37,7 @@ jobs:
       run: npm test --silent
       if: ${{ runner.os != 'Linux'}}
     - name: Run UI tests
-      run: xvfb-run --auto-servernum -s '-screen 0 1280x1024x24' npm run ui-test
+      run: xvfb-run --auto-servernum -s '-screen 0 3840x1080x24' npm run ui-test
       if: ${{ runner.os == 'Linux'}}
     - name: Run UI tests
       run: npm run ui-test
