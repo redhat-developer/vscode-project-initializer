@@ -23,7 +23,7 @@ const CAMEL_MISSIONS_EXPECTED = [
 ];
 
 const DIR = 'Fuse_Camel_TestFolder';
-const RUNTIME_VERSION = 'fuse redhat760';
+const RUNTIME_VERSION = 'fuse redhat770';
 
 // temp directory for testing
 export const WORKSPACE_PATH = path.join(path.resolve(__dirname, '..', '..'), '.ui-testing');

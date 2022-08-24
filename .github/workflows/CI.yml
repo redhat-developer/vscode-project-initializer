@@ -36,9 +36,13 @@ jobs:
     - name: Run Unit tests
       run: npm test --silent
       if: ${{ runner.os != 'Linux'}}
-    - name: Run UI tests
-      run: xvfb-run --auto-servernum -s '-screen 0 1280x1024x24' npm run ui-test
-      if: ${{ runner.os == 'Linux'}}
+    # Run UI tests
+    - name: Run UI Tests
+      uses: GabrielBB/xvfb-action@v1.6
+      if: runner.os == 'Linux'
+      with:
+        run: npm run ui-test
+        options: -screen 0 1920x1440x24
     - name: Run UI tests
       run: npm run ui-test
       if: ${{ runner.os != 'Linux'}}
