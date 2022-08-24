@@ -99,7 +99,7 @@ async function generate(commandId: string, catalog: any) {
         if (missionId) {
             let boosters = catalog.boosters.filter((item: any) => item.mission == missionId.label);
             if (boosters) {
-                let runtimeId: any = await vscode.window.showQuickPick(boosters.map((item: any) => ({ label: item.runtime, description: item.version })), { placeHolder: 'Choose runtime' });
+                let runtimeId: any = await vscode.window.showQuickPick(boosters.map((item: any) => ({ label: `${item.runtime} ${item.version}`})), { placeHolder: 'Choose runtime' });
                 if (runtimeId) {
                     let groupId = await vscode.window.showInputBox({ prompt: 'Group Id', placeHolder: 'Enter the group id', value: vscode.workspace.getConfiguration("project.initializer").get<string>("defaultGroupId") });
                     if (groupId) {
@@ -108,7 +108,10 @@ async function generate(commandId: string, catalog: any) {
                             let version = await vscode.window.showInputBox({ prompt: 'Version', placeHolder: 'Enter the version', value: vscode.workspace.getConfiguration("project.initializer").get<string>("defaultVersion") });
                             if (version) {
                                 vscode.window.setStatusBarMessage("Downloading zip project file", 1000);
-                                let zipProject = await catalogBuilder.zip(artifactId, missionId.label, runtimeId.label, runtimeId.description, groupId, artifactId, version);
+                                let runtimeLabel = runtimeId.label.substring(0, runtimeId.label.indexOf(' '));
+                                let runtimeDescription = runtimeId.label.substring(runtimeId.label.indexOf(' ') + 1, runtimeId.label.length);
+                                console.log(`runtimelabel: ${runtimeLabel} + ${runtimeDescription}`);
+                                let zipProject = await catalogBuilder.zip(artifactId, missionId.label, runtimeLabel, runtimeDescription, groupId, artifactId, version);
                                 if (zipProject) {
                                     let folder = await vscode.window.showWorkspaceFolderPick({ placeHolder: 'Select the target workspace folder' });
                                     if (folder) {

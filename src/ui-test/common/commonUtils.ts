@@ -157,13 +157,13 @@ async function convertScrollableQuickPicksToTextAndDescription(input: InputBox) 
     let options = new Set();
     const quickPicks = await input.getQuickPicks();
     quickPicks.map(async pick => {
-        options.add(await pick.getLabel() + " " + await pick.getDescription());
+        options.add(await pick.getLabel());
     });
     let actualLength = quickPicks.length;
     while(true) {
         const quickPick = await input.findQuickPick(actualLength);
         if (quickPick) {
-            options.add(await quickPick.getLabel() + " " + await quickPick.getDescription());
+            options.add(await quickPick.getLabel());
             actualLength++;
         } else {
            break;

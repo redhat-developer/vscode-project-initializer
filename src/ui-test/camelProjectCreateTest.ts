@@ -108,17 +108,9 @@ export function testCreatingCamelProject() {
                 it(`Select runtime version ${RUNTIME_VERSION}`, async function () {
                     inputBox = await InputBox.create();
                     expect(await inputBox.getPlaceHolder()).to.be.equal('Choose runtime');
-                    const quickPick = await waitForQuickPick({
-                        input: inputBox,
-                        quickPickText: RUNTIME_VERSION,
-                        quickPickGetter: async function (this: QuickPickItem) { return `${await this.getLabel()} ${await this.getDescription()}`; },
-                        timeout: 10000
-                    }).catch(async (e) => expect.fail(`Could not find runtime version(${RUNTIME_VERSION}) for ${mission}. Error: ${e}`));
-                    if (quickPick) {
-                        await quickPick.select();
-                    } else {
-                        expect.fail('QuickPick was not found for ' + mission);
-                    }
+                    await inputBox.selectQuickPick(RUNTIME_VERSION);
+                    inputBox = await InputBox.create();
+                    expect(await inputBox.getPlaceHolder()).to.be.equal('Enter the group id');
                 });
 
                 it('Select default groupId', async function () {
