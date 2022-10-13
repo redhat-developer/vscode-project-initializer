@@ -35,7 +35,7 @@ node('rhel8'){
     if(params.UPLOAD_LOCATION) {
         stage('Snapshot') {
             def filesToPush = findFiles(glob: '**.vsix')
-            sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${filesToPush[0].path} ${UPLOAD_LOCATION}/snapshots/vscode-project-initializer/"
+            sh "sftp -C ${UPLOAD_LOCATION}/snapshots/vscode-project-initializer/ <<< \$'put -p \"${filesToPush[0].path}\"'"
             stash name:'vsix', includes:filesToPush[0].path
             filesToPush = findFiles(glob: '**.tgz')
             stash name:'tgz', includes:filesToPush[0].path
@@ -66,9 +66,9 @@ node('rhel8'){
 
             stage "Promote the build to stable"
             def vsix = findFiles(glob: '**.vsix')
-            sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${vsix[0].path} ${UPLOAD_LOCATION}/stable/vscode-project-initializer/"
+            sh "sftp -C ${UPLOAD_LOCATION}/stable/vscode-project-initializer/ <<< \$'put -p \"${vsix[0].path}\"'"
             def tgz = findFiles(glob: '**.tgz')
-            sh "rsync -Pzrlt --rsh=ssh --protocol=28 ${tgz[0].path} ${UPLOAD_LOCATION}/stable/vscode-project-initializer/"
+            sh "sftp -C ${UPLOAD_LOCATION}/stable/vscode-project-initializer/ <<< \$'put -p \"${tgz[0].path}\"'"
         }
     }
 }
