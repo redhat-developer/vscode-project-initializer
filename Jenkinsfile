@@ -42,33 +42,37 @@ node('rhel8'){
         }
     }
 
-    if(publishToMarketPlace.equals('true')){
+    if(publishToMarketPlace.equals('true') || publishToOVSX.equals('true')) {
         timeout(time:5, unit:'DAYS') {
             input message:'Approve deployment?', submitter: 'jmaury'
         }
 
-        stage("Publish to Marketplace") {
-            unstash 'vsix'
-            unstash 'tgz'
-            withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
-                def vsix = findFiles(glob: '**.vsix')
-                sh 'vsce publish -p ${TOKEN} --packagePath' + " ${vsix[0].path}"
-            }
+        if(publishToMarketPlace.equals('true')) {
+            stage("Publish to Marketplace") {
+                unstash 'vsix'
+                unstash 'tgz'
+                withCredentials([[$class: 'StringBinding', credentialsId: 'vscode_java_marketplace', variable: 'TOKEN']]) {
+                    def vsix = findFiles(glob: '**.vsix')
+                    sh 'vsce publish -p ${TOKEN} --packagePath' + " ${vsix[0].path}"
+                }
 
+                archiveArtifacts artifacts:"**.vsix,**.tgz"
+
+                stage "Promote the build to stable"
+                def vsix = findFiles(glob: '**.vsix')
+                sh "sftp -C ${UPLOAD_LOCATION}/stable/vscode-project-initializer/ <<< \$'put -p \"${vsix[0].path}\"'"
+                def tgz = findFiles(glob: '**.tgz')
+                sh "sftp -C ${UPLOAD_LOCATION}/stable/vscode-project-initializer/ <<< \$'put -p \"${tgz[0].path}\"'"
+            }
+        }
+
+        if (publishToOVSX.equals('true')) {
             // Open-vsx Marketplace
             sh "npm install -g ovsx"
             withCredentials([[$class: 'StringBinding', credentialsId: 'open-vsx-access-token', variable: 'OVSX_TOKEN']]) {
                 def vsix = findFiles(glob: '**.vsix')
                 sh 'ovsx publish -p ${OVSX_TOKEN}' + " ${vsix[0].path}"
             }
-
-            archiveArtifacts artifacts:"**.vsix,**.tgz"
-
-            stage "Promote the build to stable"
-            def vsix = findFiles(glob: '**.vsix')
-            sh "sftp -C ${UPLOAD_LOCATION}/stable/vscode-project-initializer/ <<< \$'put -p \"${vsix[0].path}\"'"
-            def tgz = findFiles(glob: '**.tgz')
-            sh "sftp -C ${UPLOAD_LOCATION}/stable/vscode-project-initializer/ <<< \$'put -p \"${tgz[0].path}\"'"
         }
     }
 }
